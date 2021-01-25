@@ -1,4 +1,5 @@
 add_executable(20210125_smart_pointers 20210125_smart_pointers.cpp)
+add_executable(20210201_raii 20210201_raii.cpp)
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
@@ -11,5 +12,6 @@ if(TIPS_TESTS)
 	endmacro()
 
 	tip_test(20210125_smart_pointers)
+	tip_test(20210201_raii)
 endif()
 
