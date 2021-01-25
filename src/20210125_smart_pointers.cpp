@@ -7,7 +7,8 @@
  *
  * This example shows some basic use of a few of these smart pointers.
  *
- * Scroll down to main() and read in the program in execution order.
+ * Scroll down to main() and read in the program in execution order.  There is
+ * no need to compile and run it, as it does not print anything.
  */
 
 // This is the header you need for std::shared_ptr and friends.
@@ -20,13 +21,13 @@
 
 class Person {
 public:
-	Person(char const* name) : name(name) {}
+	explicit Person(char const* name) : name(name) {}
 	std::string name;
 };
 
 class Administration {
 public:
-	Administration(std::initializer_list<std::shared_ptr<Person>> l)
+	explicit Administration(std::initializer_list<std::shared_ptr<Person>> l)
 		: people(l.begin(), l.end())
 	{}
 
@@ -60,6 +61,9 @@ struct Dirt {};
 // A global variable, default initialized to nullptr.
 std::unique_ptr<Administration> us_cabinet;
 
+// A std::shared_ptr and std::unique_ptr can be passed in multiple ways to
+// functions, just like any other C++ object. Note that a pass-by-value makes a
+// copy of the smart pointer, not the object it points to.
 auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::unique_ptr<Campaign> make_america_great_again)
 {
 	try {
@@ -76,7 +80,7 @@ auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::uniq
 	// This will become a std::unique<Dirt>.
 	auto speech = std::make_unique<Dirt>();
 
-	// This makes the return type of this function a Person*, which is an
+	// This makes the return type of this function a Dirt*, which is an
 	// unguarded/naked pointer. However, when speech is going out of scope,
 	// the std::unique_ptr will delete the object...
 	return speech.get();
@@ -154,11 +158,13 @@ int main()
 
 	std::shared_ptr<Dirt> fact;
 	for(int i = 0; i < 1461; i++) {
-		// This new is kind of fake, as it is automatically deleted in the next iteration.
+		// This new is kind of fake, as it is automatically deleted in
+		// the next iteration.
 		fact.reset(new Dirt());
 	}
 
-	// Note how speech's type is resolved as a pointer, but the object was already deleted.
+	// Note how speech's type is resolved as a pointer, but the object was
+	// already deleted.
 	believe(speech);
 
 	election_2020(

@@ -11,5 +11,7 @@ but if you want, run something like:
 	cmake ..
 	cmake --build .
 
+Reading the source is nice, but you learn more if you try it yourself.
+
 [1]: https://en.cppreference.com/w/cpp/compiler_support
 
