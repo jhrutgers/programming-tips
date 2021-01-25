@@ -1,7 +1,8 @@
-# Programming hints
+# Programming tips
 
 This repository contains several somewhat arbitrary programming hints for C++.
-Most examples require C++14, which properly [supported][1] by most compilers.
+Most examples require C++14, which is properly [supported][1] by most
+compilers.
 
 Just have a look at the source code in `src`. You don't have to build it,
 but if you want, run something like:
