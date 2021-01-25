@@ -35,7 +35,7 @@ public:
 	// You can also put std::unique_ptr in here.
 	std::deque<std::shared_ptr<Person>> people;
 
-	std::shared_ptr<Person> const& president() {
+	std::shared_ptr<Person> const& president() const {
 		return *people.begin();
 	}
 };

@@ -20,6 +20,12 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
 	endif()
 endif()
 
+if(MSVC)
+	add_compile_options(/W4 /WX /wd4100)
+else()
+	add_compile_options(-Wall -Wextra -Werror -Wdouble-promotion -Wformat=2 -Wundef -Wconversion)
+endif()
+
 add_subdirectory(src)
 
 find_program(CPPCHECK_CMD NAMES cppcheck)
