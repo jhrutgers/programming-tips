@@ -218,7 +218,7 @@ int main()
 	storage.store( 400000);
 	Plan even_more_vulnerable_people(77000 * 2);
 
-	storage.store(4500000 * 0.4);
+	storage.store((Oss::Doses)(4500000 * 0.4));
 	Plan more_medical_staff(258000 * 2);
 	Plan even_more_medical_staff(204000 * 2);
 	Plan less_important_medical_staff(25000 * 2);
