@@ -223,6 +223,8 @@ int main()
 	Plan even_more_medical_staff(204000 * 2);
 	Plan less_important_medical_staff(25000 * 2);
 	Plan more_vulnerable_people(60000 * 2);
+
+	Plan people_who_dont_believe_in_the_virus(-100000 * 2);
 }
 
 /*
