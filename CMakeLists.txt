@@ -23,7 +23,7 @@ endif()
 if(MSVC)
 	add_compile_options(/W4 /WX /wd4100)
 else()
-	add_compile_options(-Wall -Wextra -Werror -Wdouble-promotion -Wformat=2 -Wundef -Wconversion)
+	add_compile_options(-Wall -Wextra -Werror -Wdouble-promotion -Wformat=2 -Wundef -Wconversion -Wno-unused-parameter)
 endif()
 
 add_subdirectory(src)
