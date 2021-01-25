@@ -72,12 +72,12 @@ auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::uniq
 		// Dereferencing a std::shared_ptr and std::unique_ptr returns
 		// a reference to the object that was pointed to.  In this
 		// case, it returns a Campaign&. The Campaign class implements
-		// a conversion to an std::unique<Cabinet>, which then is used
-		// in the assignment to us_cabinet.
+		// a conversion to an std::unique_ptr<Cabinet>, which then is
+		// used in the assignment to us_cabinet.
 		us_cabinet = *make_america_great_again;
 	}
 
-	// This will become a std::unique<Dirt>.
+	// This will become a std::unique_ptr<Dirt>.
 	auto speech = std::make_unique<Dirt>();
 
 	// This makes the return type of this function a Dirt*, which is an
