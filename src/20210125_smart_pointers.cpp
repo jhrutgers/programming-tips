@@ -125,6 +125,23 @@ int main()
 	// If you do it well, you won't have to use new and delete anymore in
 	// your code. Let's check the example.
 
+	{
+		std::unique_ptr<Person> president(new Person("JFK"));
+		// president->name equals "JFK" now.
+
+		// Before president is reassigned, the previous Person is
+		// deleted automatically.
+		president.reset(new Person("Johnson"));
+		// president now points to the Person "Johnson".
+
+		// If you want to forcefully delete the object pointed to, you
+		// could call president.reset(), which saves a nullptr to the
+		// std::unique_ptr.
+
+		// When president is out of scope, delete is invoked
+		// automatically.
+	}
+
 	// These lines are all equivalent:
 	// - construct by pointer
 	std::shared_ptr<Person> kaine(new Person("Kaine"));
