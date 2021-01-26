@@ -17,8 +17,10 @@
 #include <cinttypes>
 #include <stdexcept>
 #include <cassert>
+#include <memory>
+#include <list>
 
-// Some resources, which are to be acquired/and released by Plan.
+// Some resources, which are to be acquired and released by Plan.
 class Oss {
 public:
 	using Doses = int64_t;
@@ -126,6 +128,11 @@ Plan speak_up() {
 	return Plan(314159);
 }
 
+Plan smart_plan() {
+	Plan medical_staff(273000 * 2);
+	return medical_staff;
+}
+
 int main()
 {
 	// Let's create some resources.
@@ -205,26 +212,33 @@ int main()
 
 
 
-	// Well, this can continue for a while...
+	// Well, this can go on for a while...
 
 	storage.store(2500000);
+	smart_plan().exec();
 
-	Plan medical_staff(273000 * 2);
-	medical_staff.exec();
-
-	Plan vulnerable_people(155000 * 2);
-	vulnerable_people.exec();
+	auto vulnerable_people = std::make_unique<Plan>(155000 * 2);
+	vulnerable_people->exec();
 
 	storage.store( 400000);
-	Plan even_more_vulnerable_people(77000 * 2);
+
+	{
+		Plan even_more_vulnerable_people(77000 * 2);
+		even_more_vulnerable_people.exec();
+		// even_more_vulnerable_people is out of scope here.
+	}
 
 	storage.store((Oss::Doses)(4500000 * 0.4));
 	Plan more_medical_staff(258000 * 2);
 	Plan even_more_medical_staff(204000 * 2);
 	Plan less_important_medical_staff(25000 * 2);
 	Plan more_vulnerable_people(60000 * 2);
+	//...
 
-	Plan people_who_dont_believe_in_the_virus(-100000 * 2);
+	// This is a list.
+	std::list<Plan> people_who_dont_believe_in_the_virus;
+	Plan virus_wappies(-100000 * 2);
+	people_who_dont_believe_in_the_virus.emplace_front(std::move(virus_wappies));
 }
 
 /*
