@@ -181,6 +181,7 @@ int main()
 	std::atomic<Hydrocarbon> stuff;
 	stuff = methane; // atomic
 	stuff = ethane;
+	(void)stuff;
 
 #if 0
 	// These asserts will fail.
