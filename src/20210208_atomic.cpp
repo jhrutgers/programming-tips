@@ -107,7 +107,7 @@ int main()
 	// models before you can do it right.
 	//
 	// Memory ordering is about what the compiler and CPU is allowed to
-	// reorder to before or after a certain operation on a std::atomic.
+	// reorder to before or after a certain operation on an std::atomic.
 	// There are several flavors, which can speed up your application if
 	// you do it right.  However, you probably won't know when you made a
 	// mistake. Bugs in memory ordering only happen when a context switch
@@ -153,7 +153,7 @@ int main()
 		});
 
 	for(auto& t : test)
-		t.join(); // How it comes all together...
+		t.join(); // How it all comes together...
 
 	// Check if the ++ was indeed atomic for all threads...
 	assert(chernobyl == 86);
@@ -192,3 +192,14 @@ int main()
 #endif
 }
 
+/*
+ * Further reading:
+ *
+ * https://en.cppreference.com/w/cpp/atomic/atomic
+ *
+ * std::atomic just for flags:
+ * https://en.cppreference.com/w/cpp/atomic/atomic_flag
+ *
+ * Skip this one:
+ * https://en.cppreference.com/w/cpp/atomic/memory_order
+ */
