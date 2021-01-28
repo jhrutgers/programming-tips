@@ -106,12 +106,9 @@ public:
 	// exception handling, make sure it does not throw any exceptions.
 	// Therefore, mark it as noexcept.
 	~Plan() noexcept {
-		try {
-			storage.giveup(m_reserved);
-		} catch(std::overflow_error const&) {
-			// It should not happen.
-			assert(false);
-		}
+		storage.giveup(m_reserved);
+		// When an exception is thrown anyway, std::terminate() will be
+		// called, as we promised that this dtor does not throw...
 	}
 
 	void exec() {

@@ -2,3 +2,4 @@ missingIncludeSystem:*
 cstyleCast:*
 constParameter:*
 unmatchedSuppression:*
+throwInNoexceptFunction:src/20210201_raii.cpp
