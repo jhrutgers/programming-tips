@@ -7,8 +7,8 @@
  *
  * This example shows some basic use of a few of these smart pointers.
  *
- * Scroll down to main() and read in the program in execution order.  There is
- * no need to compile and run it, as it does not print anything.
+ * Scroll down to main() and read the program in execution order.  There is no
+ * need to compile and run it, as it does not print anything.
  */
 
 // This is the header you need for std::shared_ptr and friends.
