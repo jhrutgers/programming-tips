@@ -31,7 +31,7 @@
  * access the data while you were modifying, the result may be bogus. For
  * example, reference counting requires atomic increment and decrement.
  *
- * 3. Writes of one thread gets reordered when seen by another thread. OK, fair
+ * 3. Writes of one thread get reordered when seen by another thread. OK, fair
  * enough, you won't encounter it, as you probably never see that happening.
  * The application may just crash.
  *
@@ -183,8 +183,10 @@ int main()
 	stuff = ethane;
 	(void)stuff;
 
+	// However, they are too large to be implemented using atomic
+	// instructions, so a mutex will be used instead.
 #if 0
-	// These asserts will fail.
+	// Therefore, these asserts will fail.
 	assert(stuff.is_lock_free());
 #if __cplusplus >= 201703L // C++17
 	static_assert(std::atomic<Hydrocarbon>::is_always_lock_free);
