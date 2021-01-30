@@ -3,3 +3,4 @@ cstyleCast:*
 constParameter:*
 unmatchedSuppression:*
 throwInNoexceptFunction:src/20210201_raii.cpp
+noExplicitConstructor:src/20210215_move.cpp

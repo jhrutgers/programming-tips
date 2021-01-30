@@ -13,6 +13,12 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_link_libraries(20210208_atomic atomic)
 endif()
 
+add_executable(20210215_move 20210215_move.cpp)
+set_property(TARGET 20210215_move PROPERTY CXX_STANDARD 17)
+if(MSVC)
+	target_compile_options(20210215_move PUBLIC "/Zc:__cplusplus")
+endif()
+
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
@@ -27,5 +33,6 @@ if(TIPS_TESTS)
 	tip_test(20210125_smart_pointers)
 	tip_test(20210201_raii)
 	tip_test(20210208_atomic)
+	tip_test(20210215_move)
 endif()
 
