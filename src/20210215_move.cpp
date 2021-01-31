@@ -10,6 +10,8 @@
 #include <set>
 #include <list>
 #include <string>
+#include <memory>
+#include <functional>
 
 typedef std::string Stuff;
 
@@ -33,10 +35,10 @@ public:
 
 	std::string const& name() const { return m_name; }
 
-//	void trade(Stuff stuff)        { std::cout << "Trade by copy" << std::endl; }
-	void trade(Stuff const& stuff) { std::cout << "Trade by const reference" << std::endl; }
-	void trade(Stuff& stuff)       { std::cout << "Trade by reference" << std::endl; }
-	void trade(Stuff&& stuff)      { std::cout << "Trade by rvalue reference" << std::endl; }
+//	void trade(Stuff people)          { std::cout << "Trade by copy" << std::endl; }
+	void trade(Stuff const& capital)  { std::cout << "Trade by const reference" << std::endl; }
+	void trade(Stuff& services)       { std::cout << "Trade by reference" << std::endl; }
+	void trade(Stuff&& goods)         { std::cout << "Trade by rvalue reference" << std::endl; }
 
 	// Required to put a Country in an std::set.
 	bool operator<(Country const& other) const { return name() < other.name(); }
@@ -57,9 +59,13 @@ int main()
 	//          lvalue     = lvalue;
 	std::string cameron    = referendum;
 
-	//          lvalue     = std::move(lvalue);
+	//          lvalue     = rvalue;
 	std::string may        = std::move(cameron);
 	// cameron is now in an undefined state.
+
+	// Don't do this, it's really awkward. It is undefined behavior.
+	may = std::move(may);
+
 	(void)may; // Suppress warning about usefulness.
 
 
@@ -68,9 +74,9 @@ int main()
 
 	std::set<Country> eu;
 	// Note: std::unsorted_set has constant time complexity for insertion
-	// and removal. It would probably be better, but we need a hash
-	// function for Country, which is tricky to do right. So, leave it for
-	// now.
+	// and removal, while std::set is logarithmic. It would probably be
+	// better to use std::unserted_set instead, but we need a hash function
+	// for Country, which is tricky to do right. So, leave it for now.
 
 	eu.emplace(std::move(uk));
 
@@ -93,19 +99,31 @@ int main()
 
 	// Overloads get a bit harder to get right.
 
-	// By copy or reference
-	Stuff shares;
-	uk.trade(shares);
-
-	// Move temporary
-	uk.trade(Stuff("knowledge"));
-
-	// Explicit move
-	Stuff goods;
-	uk.trade(std::move(goods));
+	// By copy (not implemented) or reference
+	Stuff lse;
+	uk.trade(lse);
 
 	// Const reference.
-	Stuff const annoyance;
-	uk.trade(annoyance);
+	Stuff const stubbornness;
+	uk.trade(stubbornness);
+
+	// Move temporary
+	uk.trade(Stuff("whiskey"));
+
+	// Explicit move
+	Stuff flowers;
+	uk.trade(std::move(flowers));
+
+
+
+
+	// Why not using pointers to pass around?
+	std::list<std::reference_wrapper<Country>> cptpp;
+	auto global_uk = std::make_shared<Country>("Global Britain");
+	cptpp.push_back(*global_uk);
+
+	auto machinery = std::make_unique<Stuff>();
+	for(auto& country : cptpp)
+		country.get().trade(*machinery);
 }
 
