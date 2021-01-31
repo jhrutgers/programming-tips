@@ -81,6 +81,7 @@ public:
 	explicit Plan(Doses x = 0)
 		: m_reserved(x)
 	{
+		// Acquisition of resources.
 		storage.reserve(x);
 	}
 
@@ -106,12 +107,16 @@ public:
 	// exception handling, make sure it does not throw any exceptions.
 	// Therefore, mark it as noexcept.
 	~Plan() noexcept {
+		// Release of resources.
 		storage.giveup(m_reserved);
 		// When an exception is thrown anyway, std::terminate() will be
 		// called, as we promised that this dtor does not throw...
 	}
 
 	void exec() {
+		// Special release of resources, before running the destructor.
+		// This is not really specifically RAII, but you can always
+		// deviate from the basic concept.
 		storage.take(m_reserved);
 		storage.giveup(m_reserved);
 		m_reserved = 0;
@@ -121,13 +126,14 @@ private:
 	Doses m_reserved = 0;
 };
 
-Plan speak_up() {
-	return Plan(314159);
+Plan lobby() {
+	// As the returned value is a temporary, it is std::move()d implicitly.
+	return Plan((4500 + 1000000 + 1200000 + 1500000) * 2);
 }
 
 Plan smart_plan() {
 	Plan medical_staff(273000 * 2);
-	return medical_staff;
+	return medical_staff; // Effectively a std::move.
 }
 
 int main()
@@ -191,10 +197,10 @@ int main()
 		Plan egoistic_people(1000000);
 		Plan people_who_claim_to_be_essential(2500000);
 
-		// Note that speak_up() returns a Plan. As the object is not
+		// Note that lobby() returns a Plan. As the object is not
 		// saved, it is std::move()d automatically into the Plan at the
 		// left-hand side.
-		Plan people_who_get_bold = speak_up();
+		Plan people_who_get_bold = lobby();
 
 		// Next line doesn't work, as a Plan cannot be copied.
 		//Plan people_who_want_first = people_who_think_they_are_important;
@@ -217,7 +223,7 @@ int main()
 	auto vulnerable_people = std::make_unique<Plan>(155000 * 2);
 	vulnerable_people->exec();
 
-	storage.store( 400000);
+	storage.store(400000);
 
 	{
 		Plan even_more_vulnerable_people(77000 * 2);
@@ -230,9 +236,15 @@ int main()
 	Plan even_more_medical_staff(204000 * 2);
 	Plan less_important_medical_staff(25000 * 2);
 	Plan more_vulnerable_people(60000 * 2);
+
+	try {
+		Plan other_people(4800000 * 2);
+	} catch(...) {
+		Plan blame_uk;
+	}
 	//...
 
-	// This is a list.
+	// Dit is een list.
 	std::list<Plan> people_who_dont_believe_in_the_virus;
 	Plan virus_wappies(-100000 * 2);
 	people_who_dont_believe_in_the_virus.emplace_front(std::move(virus_wappies));
