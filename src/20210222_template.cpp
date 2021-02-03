@@ -1,7 +1,7 @@
 /*
  * Templates
  *
- * You have seen templates when using std::set<std::string>, for examples.
+ * You have seen templates when using std::set<std::string>, for example.
  * This tailors the given std::set instance to contain std::strings. This is
  * great, as regardless which type of values the set contains, the logic of
  * handling a set is the same for all of them. So, using templates reduces code
