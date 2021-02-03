@@ -22,6 +22,8 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 	target_compile_options(20210215_move PUBLIC "-Wno-self-move")
 endif()
 
+add_executable(20210222_template 20210222_template.cpp)
+
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
@@ -37,5 +39,6 @@ if(TIPS_TESTS)
 	tip_test(20210201_raii)
 	tip_test(20210208_atomic)
 	tip_test(20210215_move)
+	tip_test(20210222_template)
 endif()
 
