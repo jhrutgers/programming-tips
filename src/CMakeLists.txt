@@ -24,6 +24,8 @@ endif()
 
 add_executable(20210222_template 20210222_template.cpp)
 
+add_executable(20210222_template 20210222_template.cpp)
+
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
