@@ -10,6 +10,7 @@
  * would still encounter shared memory in combination with concurrency, namely:
  *
  * - async signals (POSIX)
+ * - console control handler (Win32)
  * - interrupt handler (on a microcontroller)
  * - frameworks that still use threads (like Qt)
  * - people who never heard of fibers
@@ -32,12 +33,16 @@
  * example, reference counting requires atomic increment and decrement.
  *
  * 3. Writes of one thread get reordered when seen by another thread. OK, fair
- * enough, you won't encounter it, as you probably never see that happening.
- * The application may just crash.
+ * enough, you won't encounter it yourself, as you probably never see that
+ * happening.  The application may just crash (in the field).
  *
- * std::atomic will help you in these cases. Scroll down to main() and read in
+ * std::atomic will help* you in these cases. Scroll down to main() and read in
  * execution order.  There is no need to run the program; nothing is printed
  * anyway.
+ *
+ * * Unless you have a certain DSP core with a hardware anomaly related to
+ *   atomic (exclusive) memory access of shared memory, while you are working
+ *   on a project with tight deadlines...
  */
 
 // std::atomic is defined here.
@@ -192,14 +197,46 @@ int main()
 	static_assert(std::atomic<Hydrocarbon>::is_always_lock_free);
 #endif
 #endif
+
+
+
+
+	// If you only need a boolean flag, use std::atomic_flag, which is
+	// guaranteed to be lock-free.
+#if __cplusplus < 202002L
+	// You must initialize the atomic_flag, otherwise its state
+	// (set/cleared) is undefined.
+	std::atomic_flag new_start = ATOMIC_FLAG_INIT;
+	// There is no way to initialize it to true.
+#else
+	// Since C++20, this is by default initialized to false (clear()ed),
+	// and the macro was deprecated.
+	std::atomic_flag new_start;
+#endif
+
+	// To set it to true afterwards:
+	new_start.test_and_set();
+	// It returns the previous value before setting it to true.
+
+	// A wise plan of action would be to force a clear() after
+	// initialization.  This results in a defined state, regardless of the
+	// C++ version.
+	std::atomic_flag jcpoa;
+	jcpoa.clear();
+	// Now, get it set.
+	jcpoa.test_and_set();
+	// Both clear() and test_and_set() take a memory order argument.
+	// However, don't do this (read back if you were tempted), as it will
+	// have all kinds of nasty side-effects.
+	jcpoa.clear(std::memory_order_relaxed);
+	// Setting it just this way, is the most reliable thing to do.
+	jcpoa.test_and_set();
 }
 
 /*
  * Further reading:
  *
  * https://en.cppreference.com/w/cpp/atomic/atomic
- *
- * std::atomic just for flags:
  * https://en.cppreference.com/w/cpp/atomic/atomic_flag
  *
  * Skip this one:
