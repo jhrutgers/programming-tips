@@ -25,6 +25,7 @@ endif()
 add_executable(20210222_template 20210222_template.cpp)
 
 add_executable(20210222_template 20210222_template.cpp)
+add_executable(20210301_lambda 20210301_lambda.cpp)
 
 
 if(TIPS_TESTS)
@@ -32,7 +33,7 @@ if(TIPS_TESTS)
 
 	macro(tip_test TIP)
 		if(VALGRIND_CMD)
-			add_test(NAME ${TIP}-valgrind COMMAND ${VALGRIND_CMD} --error-exitcode=1 --leak-check=full $<TARGET_FILE:${TIP}>)
+			add_test(NAME ${TIP}-valgrind COMMAND ${VALGRIND_CMD} --error-exitcode=1 --leak-check=full $<TARGET_FILE:${TIP}> ${ARGN})
 			set_tests_properties(${TIP}-valgrind PROPERTIES PASS_REGULAR_EXPRESSION ".*ERROR SUMMARY: 0 errors.*")
 		endif()
 	endmacro()
@@ -42,5 +43,6 @@ if(TIPS_TESTS)
 	tip_test(20210208_atomic)
 	tip_test(20210215_move)
 	tip_test(20210222_template)
+	tip_test(20210301_lambda 1000)
 endif()
 
