@@ -44,7 +44,7 @@ public:
 
 	// By default, the move assignment operator is implemented, which is a
 	// std::move of all members. If you want different behavior, override
-	// it. Note the double &, which is a rvalue reference.
+	// it. Note the double &, which is an rvalue reference.
 	Country& operator=(Country&& country) {
 		m_name = std::move(country.m_name);
 		m_laws = std::move(country.m_laws);
@@ -59,7 +59,7 @@ public:
 	//
 	// Never do call by value, as it duplicates the object. Always do by
 	// reference, which is cheaper (except for primitive types like int and
-	// float).
+	// float, but the compiler can sort that out).
 //	void trade(Stuff people)          { std::cout << "Trade by copy" << std::endl; }
 
 	// Reference to a (non-const) lvalue. You may modify the object, but it
@@ -92,9 +92,9 @@ static std::string brexit() {
 int main()
 {
 	// First a few notes on lvalues and rvalues.  Every expression C++ is
-	// from some type. The taxonomy is quite elaborate, but if probably
+	// from some type. The taxonomy is quite elaborate, but is it probably
 	// enough to understand the difference between lvalue and rvalue.  An
-	// lvalue is something that has an memory address, like a variable. An
+	// lvalue is something that has a memory address, like a variable. An
 	// rvalue does not have an address, like the result of an expression.
 	// Think of lvalue/rvalue as the _l_eft-hand side and _r_ight-hand side
 	// of an assignment.
@@ -165,7 +165,7 @@ int main()
 
 	// Assume, you want to move things back out, without copy/duplication.
 #if __cplusplus >= 201703L
-	// From C++17, it is easier to move stuff out of containers.
+	// From C++17 on, it is easier to move stuff out of containers.
 	// Remove the node from the std::set.
 	auto uk_node = eu.extract("UK");
 	// Move the value from the node to the independent uk variable.
@@ -183,9 +183,10 @@ int main()
 	}
 #endif
 
-	// As you can see, the API allows different ways to pass stuff around.
-	// Watch what happens when we call different overloads of trade().
-	// They all 'just work', but the compiler picks a different overload.
+	// As you can see, the std::set API allows different ways to pass stuff
+	// around.  To show the different ways of calling a function, watch
+	// what happens when we call different overloads of trade().  They all
+	// 'just work', but the compiler picks a different overload.
 
 	// Call by reference.
 	Stuff lse;
