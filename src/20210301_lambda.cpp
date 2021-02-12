@@ -163,9 +163,10 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	std::cout << "Average global temperature above normal: " << std::endl;
+	std::cout << "Average global temperature above normal according to Paris Agreement: " << std::endl;
+	auto preindustrial = f(1880);
 	for(auto y : { 1990, 2000, 2010, 2020, 2030, 2040, 2050, 2060, 2070 })
-		std::cout << y << ": " << f(y) << std::endl;
+		std::cout << y << ": " << f(y) - preindustrial << std::endl;
 
 	// Uncomment next line if you want to see the data in Excel.
 #if 0
