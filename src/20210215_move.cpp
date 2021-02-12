@@ -149,7 +149,7 @@ int main()
 	std::set<Country> eu;
 	// Note: std::unsorted_set has constant time complexity for insertion
 	// and removal, while std::set is logarithmic. It would probably be
-	// better to use std::unserted_set instead, but we need a hash function
+	// better to use std::unsorted_set instead, but we need a hash function
 	// for Country, which is tricky to do right. So, leave it for now.
 
 	// There are multiple ways to get into the set:
@@ -185,7 +185,7 @@ int main()
 
 	// As you can see, the API allows different ways to pass stuff around.
 	// Watch what happens when we call different overloads of trade().
-	// They all 'just work', but the compiler picks a different version.
+	// They all 'just work', but the compiler picks a different overload.
 
 	// Call by reference.
 	Stuff lse;
@@ -198,9 +198,10 @@ int main()
 	// Temporary implies rvalue reference.
 	uk.trade(Stuff("food"));
 
-	// Explicit move, resulting in the rvalue reference.
-	Stuff flowers;
-	uk.trade(std::move(flowers));
+	// By using std::move(), you kind of permit the other party of
+	// consuming it; this explicit move results in a rvalue reference.
+	Stuff vaccins;
+	uk.trade(std::move(vaccins));
 
 	// As you can see, it is up to the designer of the API to do it
 	// properly.  But then, it is easy to use. The STL containers are full
