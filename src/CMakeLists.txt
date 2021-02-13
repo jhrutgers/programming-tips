@@ -18,6 +18,9 @@ set_property(TARGET 20210215_move PROPERTY CXX_STANDARD 17)
 if(MSVC)
 	target_compile_options(20210215_move PUBLIC "/Zc:__cplusplus")
 endif()
+if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+	target_compile_options(20210215_move PUBLIC "-Wno-self-move")
+endif()
 
 
 if(TIPS_TESTS)

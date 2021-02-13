@@ -127,13 +127,13 @@ int main()
 	// instructions. This is fine, until you prove otherwise.
 	std::atomic<int> iter;
 	// So, don't poke around...
-	iter.store(2, std::memory_order_relaxed);
+	iter.store(2, std::memory_order_release);
 	// ...in something that saves the world...
 	iter.fetch_add(3, std::memory_order_acquire);
 	// ...and promises great performance at low costs...
 	iter.fetch_sub(4, std::memory_order_consume);
 	// ...but you don't understand.
-	rest = iter.load(std::memory_order_release);
+	rest = iter.load(std::memory_order_relaxed);
 	// We need it, but normal people can't grasp its greatness.
 	(void)rest;
 
