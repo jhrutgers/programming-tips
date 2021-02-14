@@ -1,4 +1,4 @@
-![test](../../workflows/test/badge.svg)
+[![test](../../workflows/test/badge.svg)](../../actions?query=workflow%3Atest)
 
 # Programming tips
 
