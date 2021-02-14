@@ -44,13 +44,13 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        compiler: [g++-10, clang]
+        compiler: [g++-10, clang++]
         include:
           - os: macos-latest
             compiler: g++-10
             package: gcc@10
           - os: macos-latest
-            compiler: clang
+            compiler: clang++
             package: llvm
     steps:
       - name: bootstrap
