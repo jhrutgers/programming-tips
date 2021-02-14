@@ -86,7 +86,7 @@ Dirt* election_2016(std::unique_ptr<Campaign> const& stronger_together, std::uni
 	// std::unique_ptr will delete the object...
 	auto p = speech.get();
 	static_assert(std::is_same<decltype(p),Dirt*>::value, "");
-	return speech.get();
+	return p;
 }
 
 void election_2020(std::unique_ptr<Campaign>&& keep_america_great_again, std::unique_ptr<Campaign> build_back_better)
