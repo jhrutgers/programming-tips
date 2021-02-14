@@ -18,7 +18,6 @@
 #include <vector>
 #include <deque>
 #include <cassert>
-#include <type_traits>
 
 class Person {
 public:
@@ -81,9 +80,9 @@ auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::uniq
 	// This will become a std::unique_ptr<Dirt>.
 	auto speech = std::make_unique<Dirt>();
 
-	// The return type of this function a Dirt*, which is an unguarded/
-	// naked pointer. However, when speech is going out of scope, the
-	// std::unique_ptr will delete the object...
+	// The return type of this function will be a Dirt*, which is an
+	// unguarded/naked pointer. However, when speech is going out of
+	// scope, the std::unique_ptr will delete the object...
 	auto p = speech.get();
 	return p;
 }
