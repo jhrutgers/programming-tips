@@ -1,4 +1,4 @@
-![test](workflows/test/badge.svg)
+![test](../../workflows/test/badge.svg)
 
 # Programming tips
 
