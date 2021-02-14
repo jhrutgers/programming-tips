@@ -14,11 +14,11 @@ env:
 
 jobs:
   build_and_test:
-    name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}.
+    name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-lastest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         compiler: [g++10]
     steps:
       - name: checkout
