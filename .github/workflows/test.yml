@@ -13,21 +13,44 @@ env:
   CTEST_OUTPUT_ON_FAILURE: 1
 
 jobs:
-  build_and_test:
-    name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}
-    runs-on: ${{ matrix.os }}
+  build-ubuntu:
+    name: Build and test on Ubuntu with ${{ matrix.compiler }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        compiler: [g++10]
+        compiler: [g++-10]
     steps:
       - name: bootstrap
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: sudo apt install ${{ matrix.compiler }}
 
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
+          cmake --build .
+
+      - name: test
+        run: ctest
+        working-directory: build
+
+  build-mac:
+    name: Build and test on Mac with ${{ matrix.compiler }}
+    runs-on: mac-latest
+    strategy:
+      matrix:
+        compiler: [g++-10, clang]
+        include:
+          - compiler: g++-10
+            package: gcc@10
+          - compiler: clang
+            package: llvm
+    steps:
       - name: bootstrap
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: brew install ${{ matrix.compiler }}
+        run: brew install ${{ matrix.package }}
 
       - name: checkout
         uses: actions/checkout@v2
