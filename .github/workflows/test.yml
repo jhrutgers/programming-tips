@@ -31,4 +31,4 @@ jobs:
           cmake --build .
       - name: test
         run: ctest
-        working_directory: build
+        working-directory: build
