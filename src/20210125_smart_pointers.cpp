@@ -65,7 +65,7 @@ std::unique_ptr<Administration> us_cabinet;
 // A std::shared_ptr and std::unique_ptr can be passed in multiple ways to
 // functions, just like any other C++ object. Note that a pass-by-value makes a
 // copy of the smart pointer, not the object it points to.
-auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::unique_ptr<Campaign> make_america_great_again)
+Dirt* election_2016(std::unique_ptr<Campaign> const& stronger_together, std::unique_ptr<Campaign> make_america_great_again)
 {
 	try {
 		throw std::vector<Dirt>({Dirt(), Dirt(), Dirt()});
@@ -81,10 +81,9 @@ auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::uniq
 	// This will become a std::unique_ptr<Dirt>.
 	auto speech = std::make_unique<Dirt>();
 
-	// This makes the return type of this function a Dirt*, which is an
-	// unguarded/naked pointer. However, when speech is going out of scope,
-	// the std::unique_ptr will delete the object...
-	static_assert(std::is_same<decltype(speech.get()),Dirt*>::value, "");
+	// The return type of this function a Dirt*, which is an unguarded/
+	// naked pointer. However, when speech is going out of scope, the
+	// std::unique_ptr will delete the object...
 	return speech.get();
 }
 
