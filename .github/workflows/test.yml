@@ -76,7 +76,7 @@ jobs:
         run: ctest
         working-directory: build
 
-build-win:
+  build-win:
     name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}
     runs-on: ${{ matrix.os }}
     strategy:
