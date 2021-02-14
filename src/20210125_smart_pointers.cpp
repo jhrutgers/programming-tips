@@ -18,6 +18,7 @@
 #include <vector>
 #include <deque>
 #include <cassert>
+#include <type_traits>
 
 class Person {
 public:
@@ -83,6 +84,7 @@ auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::uniq
 	// This makes the return type of this function a Dirt*, which is an
 	// unguarded/naked pointer. However, when speech is going out of scope,
 	// the std::unique_ptr will delete the object...
+	static_assert(std::is_same<decltype(speech.get()),Dirt*>::value, "");
 	return speech.get();
 }
 
