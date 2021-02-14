@@ -76,3 +76,31 @@ jobs:
         run: ctest
         working-directory: build
 
+build-win:
+    name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+        compiler: [VS2019]
+        include:
+          - os: windows-latest
+            compiler: VS2019
+            generator: Visual Studio 16 2019
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "${{ matrix.generator }}"
+          cmake --build .
+        shell: cmd
+
+      - name: test
+        run: cmake --build . --target RUN_TESTS
+        working-directory: build
+        shell: cmd
+
