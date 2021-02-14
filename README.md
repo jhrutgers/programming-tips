@@ -1,3 +1,5 @@
+![test](workflows/test/badge.svg)
+
 # Programming tips
 
 This repository contains several somewhat arbitrary programming hints for C++.
