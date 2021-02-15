@@ -23,8 +23,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 endif()
 
 add_executable(20210222_template 20210222_template.cpp)
-
-add_executable(20210222_template 20210222_template.cpp)
 add_executable(20210301_lambda 20210301_lambda.cpp)
 
 
