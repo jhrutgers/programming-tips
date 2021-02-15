@@ -157,16 +157,15 @@ struct is_vector {};
 // Now, do a template specialization for all Vaccins. By default, set value to
 // false.
 template <typename T>
-struct is_vector<Vaccin<T>> { static bool const value = false; };
-// As value is static and const, it won't use any memory. The compiler will
-// optimize as if value was just a constant or macro. There is no run-time
-// overhead in querying is_vector's value. This is what makes templates really
-// powerful.
+struct is_vector<Vaccin<T>> { enum { value = 0 }; };
+// As value is an enum, it won't use any memory. There is no run-time overhead
+// in querying is_vector's value, as it is known at compile time. This is what
+// makes templates really powerful.
 
 // Another specialization, specifically for Vector Vaccins, regardless of the
 // type of Vector.
 template <typename T>
-struct is_vector<Vaccin<Vector<T>>> { static bool const value = true; };
+struct is_vector<Vaccin<Vector<T>>> { enum { value = 1 }; };
 // In main(), we will use this type trait.
 
 
