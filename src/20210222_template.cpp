@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Templates
  *
  * You have seen templates when using std::set<std::string>, for example.
