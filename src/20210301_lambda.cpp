@@ -201,11 +201,11 @@ int main(int argc, char** argv) {
 	std::cout << "Years sorted by average global temperature: ";
 	print(gistemp_v4_sorted, [](Sample const& x) { return x.first; });
 
-	// There is no way to make a templated lambda, as you could do with a
-	// normal function.  However, if you specify auto as argument type,
-	// that effectively becomes a template.  So, in this example, the
-	// lambda accept any type of argument, as if 'auto' was a template
-	// type.
+	// There is no way to make a templated lambda (till C++20), as you
+	// could do with a normal function.  However, if you specify auto as
+	// argument type, that effectively becomes a template.  So, in this
+	// example, the lambda accept any type of argument, as if 'auto' was a
+	// template type.
 	//
 	// We are going to do some curve fitting in a moment. For that, we need
 	// to compute some root-mean-square value, where f() takes a year and
@@ -218,10 +218,14 @@ int main(int argc, char** argv) {
 		e /= (double)gistemp_v4.size(); // mean
 		return std::sqrt(e); // root
 	};
+	// Hmm, such a large lambda is not very comfortable. Reducing the
+	// lambda and increase i(n)solation is probably the best advice in
+	// general, as it reduces the complexity of the actual problem we are
+	// trying to solve...
 
 	// The variable rms is a lambda function, but it is unspecified what
 	// the type will be. If you want to assign a lambda to a variable, use
-	// a std::function. Any function pointer or lambda can be saved in it.
+	// an std::function. Any function pointer or lambda can be saved in it.
 	// When calling f(2021.16) it passes the argument 2021.16 to the
 	// function saved in the std::function.  If no function is saved (like
 	// it is after using the default constructor), calling it does nothing.
@@ -235,9 +239,9 @@ int main(int argc, char** argv) {
 	auto generator = [](double a, double b, double c, double d) {
 		return [=](double x) { return a * std::pow(b, x + c) + d; }; };
 
-	// Find a function f(x) = a*b^(x+c)+d, such that rms(f(x)) is minimized
+	// Find a function f(x) = a*b^(x+c)+d, such that rms(f) is minimized
 	// for a, b, c, and d.  Ok, there are smarter ways (just solving
-	// mathematically or using gradient decent), but this one is easy to
+	// mathematically or using gradient descent), but this one is easy to
 	// implement... And using some more computing power once in a while
 	// won't hurt anyone, right?
 	//
@@ -303,6 +307,21 @@ int main(int argc, char** argv) {
 	for(auto const& sample : gistemp_v4)
 		std::cout << sample.first << "," << sample.second << "," << f(sample.first) << std::endl;
 #endif
+
+	// It is left as an exercise to the reader to determine in what year
+	// the two agreed temperature limits are broken.
+
+
+
+	// A few final notes. Lambdas can do everything normal functions can.
+	// However, I would suggest that you only use a lambda when the
+	// implementation is simple (one or a few lines of code), and it is
+	// only used in one place (like a comparator function as shown above).
+	// If the capture list is longer than than all-by-reference or
+	// all-by-value, it might be a hint that you are trying to solve a
+	// complex issue, and lambdas do not make that simpler.
+
+	return u'λ';
 }
 
 /*
