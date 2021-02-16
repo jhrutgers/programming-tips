@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Lambda functions
  *
  * Ever needed a small function that is only used in one place, such as a
