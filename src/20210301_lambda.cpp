@@ -257,7 +257,7 @@ int main(int argc, char** argv) {
 	std::minstd_rand0 random(rd());
 	std::uniform_real_distribution<> a_dis(0, 10.0);
 	std::uniform_real_distribution<> b_dis(1.0, 1.1);
-	std::uniform_real_distribution<> c_dis(-1900.0, -2100.0);
+	std::uniform_real_distribution<> c_dis(-2100.0, -1900.0);
 	std::uniform_real_distribution<> d_dis(-1.0, 1.0);
 
 	unsigned long iterations = 1000000;
