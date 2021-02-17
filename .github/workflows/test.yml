@@ -99,11 +99,11 @@ jobs:
           mkdir build
           cd build
           cmake .. -G "${{ matrix.generator }}" -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
-          cmake --build .
+          cmake --build . --config ${{ matrix.buildtype }}
         shell: cmd
 
       - name: test
-        run: cmake --build . --target RUN_TESTS
+        run: cmake --build . --target RUN_TESTS --config ${{ matrix.buildtype }}
         working-directory: build
         shell: cmd
 
