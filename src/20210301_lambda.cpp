@@ -219,7 +219,7 @@ int main(int argc, char** argv) {
 		return std::sqrt(e); // root
 	};
 	// Hmm, such a large lambda is not very comfortable. Reducing the
-	// lambda and increase i(n)solation is probably the best advice in
+	// lambda and increase insulation is probably the best advice in
 	// general, as it reduces the complexity of the actual problem we are
 	// trying to solve...
 

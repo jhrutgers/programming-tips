@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Resource Acquisition Is Initialization (RAII)
  *
  * Basically, you tie the acquisition and release of a resource to the lifetime

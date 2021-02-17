@@ -8,6 +8,9 @@ indent_size = 8
 indent_style = tab
 trim_trailing_whitespace = true
 
+[*.{cpp,h}]
+charset = utf-8-bom
+
 [*.yml]
 indent_style = space
 indent_size = 2

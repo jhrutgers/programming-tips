@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Smart pointers
  *
  * Memory management can be tricky in C++. Smart pointers may help you with it,

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * std::atomic
  *
  * When using concurrency, communication using shared memory is way trickier

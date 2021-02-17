@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Move semantics
  *
  * C++ is always concerned about performance. Since C++11, you can act on when
