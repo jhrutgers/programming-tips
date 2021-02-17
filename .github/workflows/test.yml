@@ -14,12 +14,13 @@ env:
 
 jobs:
   build-ubuntu:
-    name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}
+    name: Build and test ${{ matrix.buildtype }} on ${{ matrix.os }} with ${{ matrix.compiler }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
         compiler: [g++-7, g++-8, g++-9, g++-10]
+        buildtype: [Debug, Release]
     steps:
       - name: bootstrap
         run: sudo apt install ${{ matrix.compiler }} valgrind cppcheck
@@ -31,7 +32,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
+          cmake .. -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
           cmake --build .
 
       - name: test
@@ -39,12 +40,13 @@ jobs:
         working-directory: build
 
   build-mac:
-    name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}
+    name: Build and test ${{ matrix.buildtype }} on ${{ matrix.os }} with ${{ matrix.compiler }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest]
         compiler: [g++-10, clang++, llvm11]
+        buildtype: [Debug, Release]
         include:
           - os: macos-latest
             compiler: g++-10
@@ -69,7 +71,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+          cmake .. -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
           cmake --build .
 
       - name: test
@@ -77,12 +79,13 @@ jobs:
         working-directory: build
 
   build-win:
-    name: Build and test on ${{ matrix.os }} with ${{ matrix.compiler }}
+    name: Build and test ${{ matrix.buildtype }} on ${{ matrix.os }} with ${{ matrix.compiler }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest]
         compiler: [VS2019]
+        buildtype: [Debug, Release]
         include:
           - os: windows-latest
             compiler: VS2019
@@ -95,7 +98,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G "${{ matrix.generator }}"
+          cmake .. -G "${{ matrix.generator }}" -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
           cmake --build .
         shell: cmd
 
