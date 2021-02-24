@@ -14,16 +14,25 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 add_executable(20210215_move 20210215_move.cpp)
-set_property(TARGET 20210215_move PROPERTY CXX_STANDARD 17)
-if(MSVC)
-	target_compile_options(20210215_move PUBLIC "/Zc:__cplusplus")
-endif()
+target_compile_features(20210215_move PRIVATE cxx_std_17)
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 	target_compile_options(20210215_move PUBLIC "-Wno-self-move")
 endif()
 
 add_executable(20210222_template 20210222_template.cpp)
 add_executable(20210301_lambda 20210301_lambda.cpp)
+add_executable(20210308_auto 20210308_auto.cpp)
+
+list(FIND CMAKE_CXX_COMPILE_FEATURES "cxx_std_20" index)
+if(${index} GREATER -1)
+	target_compile_features(20210308_auto PRIVATE cxx_std_20)
+else()
+	target_compile_features(20210308_auto PRIVATE cxx_std_17)
+endif()
+
+if(NOT MSVC)
+	target_compile_options(20210308_auto PUBLIC -Wno-unused-variable -Wno-unused-but-set-variable)
+endif()
 
 
 if(TIPS_TESTS)
@@ -59,5 +68,6 @@ if(TIPS_TESTS)
 	tip_test(20210215_move 0)
 	tip_test(20210222_template 0)
 	tip_test(20210301_lambda 955 1000)
+	tip_test(20210308_auto 0)
 endif()
 

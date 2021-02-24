@@ -23,7 +23,7 @@ if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10.0")
 endif()
 
 if(MSVC)
-	add_compile_options(/W4 /WX /wd4100)
+	add_compile_options(/W4 /WX /wd4100 /Zc:__cplusplus)
 else()
 	add_compile_options(-Wall -Wextra -Werror -Wdouble-promotion -Wformat=2 -Wundef -Wconversion -Wno-unused-parameter)
 endif()
