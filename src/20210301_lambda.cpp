@@ -185,9 +185,9 @@ int main(int argc, char** argv) {
 	// If you are a beginner on lambda functions, you should not need it,
 	// so omit it.  If you need it, you are not a beginner anymore...
 
-	// Lets duplicate the data, and sort it. std::sort() expects a function
-	// with two arguments, as a comparator function. In this case, the
-	// capture list is empty, as there is no external variable to be
+	// Let's duplicate the data, and sort it. std::sort() expects a
+	// function with two arguments, as a comparator function. In this case,
+	// the capture list is empty, as there is no external variable to be
 	// brought in from the current scope. You could have defined a static
 	// function too, but this is a very compact way, as the comparator is
 	// only used here. So, there is no need to pollute the global scope for
@@ -196,7 +196,7 @@ int main(int argc, char** argv) {
 	std::sort(gistemp_v4_sorted.begin(), gistemp_v4_sorted.end(),
 		[](Sample const& a, Sample const& b) { return a.second < b.second; });
 
-	// In this case, we define a function ourselves that accept the lambda
+	// In this case, we define a function ourselves that accepts the lambda
 	// as callback.
 	std::cout << "Years sorted by average global temperature: ";
 	print(gistemp_v4_sorted, [](Sample const& x) { return x.first; });
