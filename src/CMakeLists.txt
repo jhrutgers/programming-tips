@@ -30,8 +30,10 @@ else()
 	target_compile_features(20210308_auto PRIVATE cxx_std_17)
 endif()
 
-if(CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_compile_options(20210308_auto PUBLIC -Wno-unused-variable -Wno-unused-but-set-variable)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+	target_compile_options(20210308_auto PUBLIC -Wno-unused-variable)
 endif()
 
 
