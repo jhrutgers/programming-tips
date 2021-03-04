@@ -30,7 +30,7 @@ else()
 	target_compile_features(20210308_auto PRIVATE cxx_std_17)
 endif()
 
-if(NOT MSVC)
+if(CMAKE_COMPILER_IS_GNUCXX)
 	target_compile_options(20210308_auto PUBLIC -Wno-unused-variable -Wno-unused-but-set-variable)
 endif()
 
