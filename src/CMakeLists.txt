@@ -24,7 +24,7 @@ add_executable(20210301_lambda 20210301_lambda.cpp)
 add_executable(20210308_auto 20210308_auto.cpp)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES "cxx_std_20" index)
-if(${index} GREATER -1)
+if(${index} GREATER -1 AND NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 	target_compile_features(20210308_auto PRIVATE cxx_std_20)
 else()
 	target_compile_features(20210308_auto PRIVATE cxx_std_17)
