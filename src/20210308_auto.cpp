@@ -99,7 +99,7 @@ int main()
 	//
 	// std::map<int, std::string>* jezero = new std::map<int, std::string>(...);
 	auto jezero = new std::map<int, std::string>({/* ... */});
-	delete jezero;
+	delete jezero; // "Who needs a map if you got lasers..."
 
 	// Similarly, it is crystal clear to what auto will be deducted.
 	//
