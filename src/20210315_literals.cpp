@@ -202,7 +202,7 @@ int main()
 	std::cout << "Wilders: \"" << "Climate change is our biggest challenge"_pvv << "\"" << std::endl;
 	std::cout << "Baudet: \"" << "COVID-19 is a deadly virus"_fvd << "\"" << std::endl;
 	std::cout << "Baudet: \"In 2020, " << 11'432_fvd << " people died because of corona\"" << std::endl;
-	std::cout << "SP: \"" << "The national dept should be limited to sane levels"_sp << "\"" << std::endl;
+	std::cout << "SP: \"" << "The national debt should be limited to sane levels"_sp << "\"" << std::endl;
 	std::cout << "SGP: \"Men and women are equal. Therefore we want " << 50.0_sgp << "% of the candidates to be female\"" << std::endl;
 	std::cout << "DENK: \"" << "People in Groningen should be compensated for the effects of gas extraction"_denk << "\"" << std::endl;
 	std::cout << "Blanco: \"Vaccines will bring us back to normal\""_30 << std::endl;
