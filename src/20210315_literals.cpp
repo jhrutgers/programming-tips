@@ -15,6 +15,10 @@
 #include <codecvt>
 #include <chrono>
 
+#ifndef __cpp_char8_t
+using char8_t = char;
+#endif
+
 template<class I, class E, class S> struct codecvt : std::codecvt<I, E, S> { ~codecvt() { } };
 
 template <typename T>
@@ -126,7 +130,7 @@ int main()
 
 	// Always standardize to UTF-8. It's easy, consistent, and efficient.
 	// This is a good choice.
-	char const Meyrem[] = u8"Çimen";
+	char8_t const Meyrem[] = u8"Çimen";
 	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
 
 	// By the way, the standard defines that you can use Unicode characters

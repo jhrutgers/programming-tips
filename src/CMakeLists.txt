@@ -39,6 +39,10 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 	target_compile_options(20210308_auto PUBLIC -Wno-unused-variable)
 endif()
 
+if(MSVC)
+	target_compile_options(20210315_literals PUBLIC /D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
+endif()
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
