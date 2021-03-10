@@ -25,6 +25,17 @@ void print_density(char const* party, T bpp) {
 		<< " bytes per page." << std::endl;
 }
 
+// A user-defined literal is implemented as the "" operator. The suffix has to
+// start with an underscore. The argument to the operator can be (among a few
+// variations):
+//
+// - unsigned long long int: any integer literal
+// - long double:            any floating point literal
+// - char const*, size_t:    string literal
+//
+// It can return anything. Although it looks a bit strange, a literal 13_fvd
+// will be replaced by a call to operator""_fvd(13) and return a char const* in
+// this example.
 char const* operator ""_fvd(unsigned long long fact) {
 	return "only 151 young";
 }
@@ -46,7 +57,29 @@ int operator ""_sgp(long double fact) {
 }
 
 std::string operator""_denk(char const* fact, size_t size) {
-	return std::regex_replace(fact, std::regex("compensated (.*)"), "resilient $1; we increase the gas production to compensate for other losses");
+	return std::regex_replace(fact, std::regex("compensated for (.*)"), "resilient to $1; we increase the gas production to compensate for other losses");
+}
+
+std::string operator""_30(char const* fact, size_t size) {
+	return std::regex_replace(fact, std::regex("back .*"), "more destruction. Who believes science anyway?");
+}
+
+struct Volt {
+	long double x;
+	Volt operator+(Volt const& rhs) const { return Volt{x + rhs.x}; };
+	Volt& operator+=(Volt const& rhs) { x += rhs.x; return *this; }
+};
+
+std::ostream& operator<<(std::ostream& os, Volt const& val) {
+	return os << val.x << " V";
+}
+
+Volt operator""_V(unsigned long long x) {
+	return Volt{(long double)x};
+}
+
+Volt operator""_V(long double x) {
+	return Volt{x};
 }
 
 int main()
@@ -72,6 +105,8 @@ int main()
 #endif
 	(void)pvdt; // Gone also.
 	(void)(vvd + pvv + cda + ja21); // Is never going to work.
+
+
 
 	// As you know, you can also have string literals. But choose them
 	// wisely, as picking one arbitrarily may have some nasty side-effects.
@@ -101,11 +136,12 @@ int main()
 //	char const Songül[] = "Mutluer";
 
 
+
 	// Values can have suffixes, namely l or L (long or long double), ll or
-	// LL (long long), u or U (unsigned), f or F (float). That was already
-	// there for a long time.  What was added in C++14, is that you can add
-	// an ' anywhere in between digits for readability. They are ignored by
-	// the compiler.
+	// LL (long long), u or U (unsigned, combined with L or LL), f or F
+	// (float). That was already there for a long time.  What was added in
+	// C++14, is that you can add an ' anywhere in between digits for
+	// readability. They are ignored by the compiler.
 	long double d66_bpp  =   1'985'326L  / 208.0L;
 	double      pvda_bpp =  15'890'202LL / 105.;
 	float       sp_bpp   =     178'223   /  32.f;
@@ -127,6 +163,8 @@ int main()
 		<< " to get people voting within roughly "
 		<< std::chrono::duration_cast<std::chrono::hours>(voting_window).count() << " hours" << std::endl;
 
+
+
 	// It becomes better; you can define your own suffix!  This opens a
 	// whole new world of possibilities. Let's see how this freedom can be
 	// used.
@@ -137,6 +175,23 @@ int main()
 	std::cout << "SP: \"" << "The national dept should be limited to sane levels"_sp << "\"" << std::endl;
 	std::cout << "SGP: \"Men and women are equal. Therefore we want " << 50.0_sgp << "% of the candidates to be female\"" << std::endl;
 	std::cout << "DENK: \"" << "People in Groningen should be compensated for the effects of gas extraction"_denk << "\"" << std::endl;
+	std::cout << "Blanco: \"Vaccines will bring us back to normal\""_30 << std::endl;
+
+
+
+	// Ok, such a usage of user-defined literals is just wicked.  It is
+	// better to stick to scientific usages, especially to use SI units.
+	// Basically, this is how you could implement it:
+	auto x = 17_V;
+
+	// An expression like x + 2s or 1_V + 5 is now prohibited by the
+	// compiler.  If such a physics library implement the units correctly,
+	// it will nicely protect you of doing computations that make no sense.
+	std::cout << x + 2.8e1_V << std::endl;
+
+	// It is probably a good idea to pick one of the available unit
+	// libraries (usually header-only and only compile-time overhead), and
+	// use it everywhere when you do anything with physics.
 }
 
 /*
