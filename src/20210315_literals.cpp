@@ -15,10 +15,6 @@
 #include <codecvt>
 #include <chrono>
 
-#ifndef __cpp_char8_t
-using char8_t = char;
-#endif
-
 template<class I, class E, class S> struct codecvt : std::codecvt<I, E, S> { ~codecvt() { } };
 
 template <typename T>
@@ -130,8 +126,23 @@ int main()
 
 	// Always standardize to UTF-8. It's easy, consistent, and efficient.
 	// This is a good choice.
-	char8_t const Meyrem[] = u8"Çimen";
+	//
+	// However, this is awkward. char8_t is new and broken in C++20. This
+	// is what you want to do, but std::cout cannot accept char8_t -- it is
+	// explicitly removed from the standard, but there is no alternative
+	// yet.
+//	char8_t const Meyrem[] = u8"Çimen";
+//	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
+#ifndef __cpp_char8_t
+	// C++17 and earlier did not know char8_t, so u8"" just returns char.
+	// This can be handled properly.
+	char const Meyrem[] = u8"Çimen";
 	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
+#else
+	// Till C++23(?), don't use the u8 prefix. Just do this:
+	char const Meyrem[] = "Çimen";
+	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
+#endif
 
 	// By the way, the standard defines that you can use Unicode characters
 	// in names too.  However, g++ < 10, cppcheck, and probably other
