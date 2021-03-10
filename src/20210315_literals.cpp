@@ -15,6 +15,10 @@
 #include <codecvt>
 #include <chrono>
 
+#ifdef WIN32
+#  include <windows.h>
+#endif
+
 template<class I, class E, class S> struct codecvt : std::codecvt<I, E, S> { ~codecvt() { } };
 
 template <typename T>
@@ -107,19 +111,28 @@ int main()
 	(void)(vvd + pvv + cda + ja21); // Is never going to work.
 
 
-
 	// As you know, you can also have string literals. But choose them
 	// wisely, as picking one arbitrarily may have some nasty side-effects.
-	//
+
+#ifdef WIN32
+	// First of all, Windows needs some more attention to print non-ASCII
+	// to the console... Argh...
+	SetConsoleOutputCP(CP_UTF8);
+#endif
+
+#if _MSC_VER < 1900 || _MSC_VER >= 1920
 	// Don't use UTF-16 or UTF-32, as for every ASCII character (probably
-	// common case), 0 bytes are inserted. It is inefficient. And annoying to print.
+	// common case), 0 bytes are inserted. It is inefficient. And annoying
+	// to print.  And has a bug in MSVC 2015 and 2017.
 	char16_t const Magda[] = u"Łuczycki";
 	std::cout << std::wstring_convert<codecvt<char16_t,char,std::mbstate_t>,char16_t>().to_bytes(Magda) << " = " << sizeof(Magda) << " bytes" << std::endl;
 
 	char32_t const Gurcu[] = U"Polat-Iş\u0131ktaş";
 	std::cout << std::wstring_convert<codecvt<char32_t,char,std::mbstate_t>,char32_t>().to_bytes(Gurcu) << " = " << sizeof(Gurcu) << " bytes" << std::endl;
+#endif
 
-	// Don't use wchar_t (wide strings), as it is locale and OS dependent what you get...
+	// Don't use wchar_t (wide strings), as it is locale and OS dependent
+	// what you get...
 	wchar_t const Dilan[] = L"Yeşilgöz-Zegerius";
 	std::cout << std::wstring_convert<std::codecvt_utf8<wchar_t>,wchar_t>().to_bytes(Dilan) << " = " << sizeof(Dilan) << " bytes" << std::endl;
 	// ...and codecvt_utf8 is deprecated in C++17.
@@ -132,17 +145,19 @@ int main()
 	// explicitly removed from the standard, but there is no alternative
 	// yet.
 //	char8_t const Meyrem[] = u8"Çimen";
-//	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
 #ifndef __cpp_char8_t
 	// C++17 and earlier did not know char8_t, so u8"" just returns char.
 	// This can be handled properly.
 	char const Meyrem[] = u8"Çimen";
-	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
 #else
 	// Till C++23(?), don't use the u8 prefix. Just do this:
 	char const Meyrem[] = "Çimen";
-	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
 #endif
+	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
+
+	// Ahhh, strings, why are they so difficult?!? Ok, remember this: Only
+	// use UTF-8 (and safe your source files accordingly), normal string
+	// literals, and just char, and everything works fine.
 
 	// By the way, the standard defines that you can use Unicode characters
 	// in names too.  However, g++ < 10, cppcheck, and probably other
