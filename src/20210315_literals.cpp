@@ -156,7 +156,7 @@ int main()
 	std::cout << Meyrem << " = " << sizeof(Meyrem) << " bytes" << std::endl;
 
 	// Ahhh, strings, why are they so difficult?!? Ok, remember this: Only
-	// use UTF-8 (and safe your source files accordingly), normal string
+	// use UTF-8 (and save your source files accordingly), normal string
 	// literals, and just char, and everything works fine.
 
 	// By the way, the standard defines that you can use Unicode characters
