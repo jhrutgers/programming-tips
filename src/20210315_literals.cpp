@@ -120,7 +120,7 @@ int main()
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
-#if _MSC_VER < 1900 || _MSC_VER >= 1920
+#if !defined(_MSC_VER) || _MSC_VER < 1900 || _MSC_VER >= 1920
 	// Don't use UTF-16 or UTF-32, as for every ASCII character (probably
 	// common case), 0 bytes are inserted. It is inefficient. And annoying
 	// to print.  And has a bug in MSVC 2015 and 2017.
