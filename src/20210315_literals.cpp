@@ -19,7 +19,10 @@
 #  include <windows.h>
 #endif
 
-template<class I, class E, class S> struct codecvt : std::codecvt<I, E, S> { ~codecvt() { } };
+template <typename I, typename E, typename S>
+struct codecvt : std::codecvt<I, E, S> {
+	~codecvt() = default;
+};
 
 template <typename T>
 void print_density(char const* party, T bpp) {
@@ -215,7 +218,7 @@ int main()
 	auto x = 17_V;
 
 	// An expression like x + 2s or 1_V + 5 is now prohibited by the
-	// compiler.  If such a physics library implement the units correctly,
+	// compiler.  If such a physics library implements the units correctly,
 	// it will nicely protect you of doing computations that make no sense.
 	std::cout << x + 2.8e1_V << std::endl;
 
