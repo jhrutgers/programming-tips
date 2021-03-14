@@ -19,10 +19,9 @@
 #  include <windows.h>
 #endif
 
+// This is a dirty solution of a dirty problem. Ignore.
 template <typename I, typename E, typename S>
-struct codecvt : std::codecvt<I, E, S> {
-	~codecvt() = default;
-};
+struct codecvt : std::codecvt<I, E, S> { ~codecvt() override = default; }; // NOLINT
 
 template <typename T>
 void print_density(char const* party, T bpp) {
@@ -208,7 +207,7 @@ int main()
 	std::cout << "SP: \"" << "The national debt should be limited to sane levels"_sp << "\"" << std::endl;
 	std::cout << "SGP: \"Men and women are equal. Therefore we want " << 50.0_sgp << "% of the candidates to be female\"" << std::endl;
 	std::cout << "DENK: \"" << "People in Groningen should be compensated for the effects of gas extraction"_denk << "\"" << std::endl;
-	std::cout << "Blanco: \"Vaccines will bring us back to normal\""_30 << std::endl;
+	std::cout << R"(Blanco: "Vaccines will bring us back to normal")"_30 << std::endl;
 
 
 

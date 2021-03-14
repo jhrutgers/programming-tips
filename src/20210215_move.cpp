@@ -20,7 +20,7 @@
 #include <memory>
 #include <functional>
 
-typedef std::string Stuff;
+using Stuff = std::string;
 
 class Country {
 public:
@@ -38,14 +38,14 @@ public:
 
 	// The move constructor. Typically implemented as a move assignment.
 	// Note of the argument type that distinguishes between copy and move.
-	Country(Country&& country) {
+	Country(Country&& country) noexcept {
 		*this = std::move(country);
 	}
 
 	// By default, the move assignment operator is implemented, which is a
 	// std::move of all members. If you want different behavior, override
 	// it. Note the double &, which is an rvalue reference.
-	Country& operator=(Country&& country) {
+	Country& operator=(Country&& country) noexcept {
 		m_name = std::move(country.m_name);
 		m_laws = std::move(country.m_laws);
 		m_treaties.clear();

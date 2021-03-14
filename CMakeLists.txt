@@ -25,8 +25,45 @@ endif()
 if(MSVC)
 	add_compile_options(/W4 /WX /wd4100 /Zc:__cplusplus)
 else()
-	add_compile_options(-Wall -Wextra -Werror -Wdouble-promotion -Wformat=2 -Wundef -Wconversion -Wno-unused-parameter)
+	add_compile_options(-Wall -Wextra -Werror -Wdouble-promotion -Wformat=2 -Wundef -Wconversion -Wno-unused-parameter -Wshadow)
 endif()
+
+if(${CMAKE_VERSION} VERSION_GREATER "3.6.0")
+	find_program(CLANG_TIDY_EXE NAMES "clang-tidy" DOC "Path to clang-tidy executable")
+endif()
+
+function(do_clang_tidy target)
+	if(CLANG_TIDY_EXE)
+		string(CONCAT CLANG_TIDY_CHECKS "-checks="
+			"bugprone-*,"
+			"clang-analyzer-*,"
+			"concurrency-*,"
+			"cppcoreguidelines-*,"
+			"-cppcoreguidelines-owning-memory,"
+			"-cppcoreguidelines-pro-bounds-array-to-pointer-decay,"
+			"-cppcoreguidelines-pro-bounds-pointer-arithmetic,"
+			"hicpp-*,"
+			"-hicpp-braces-around-statements,"
+			"-hicpp-exception-baseclass,"
+			"-hicpp-explicit-conversions,"
+			"-hicpp-no-array-decay,"
+			"misc-*,"
+			"-misc-unused-parameters,"
+			"modernize-*,"
+			"-modernize-pass-by-value,"
+			"-modernize-unary-static-assert,"
+			"portability-*,"
+			"readability-*,"
+			"-readability-braces-around-statements,"
+			${ARGN}
+		)
+		set(DO_CLANG_TIDY "${CLANG_TIDY_EXE}" "${CLANG_TIDY_CHECKS}"
+			-warnings-as-errors=*
+			-extra-arg=-Wno-unknown-warning-option
+		)
+		set_target_properties(${target} PROPERTIES CXX_CLANG_TIDY "${DO_CLANG_TIDY}")
+	endif()
+endfunction()
 
 add_subdirectory(src)
 

@@ -178,6 +178,7 @@ int main()
 	// Compare this to using auto:
 	auto cache2 = deposit(samples);
 	static_assert(std::is_same<decltype(cache2), int>::value, "");
+	(void)cache2;
 
 	// But this really complicates understanding. Can you predict the type
 	// of cache1 and cache2? Probably not, so it is better just to be

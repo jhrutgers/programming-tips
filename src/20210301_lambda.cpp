@@ -208,13 +208,13 @@ int main(int argc, char** argv) {
 	// template type.
 	//
 	// We are going to do some curve fitting in a moment. For that, we need
-	// to compute some root-mean-square value, where f() takes a year and
+	// to compute some root-mean-square value, where fun() takes a year and
 	// returns the temperature, which is compared to our data set. Try to
 	// understand how it works.
-	auto rms = [&](auto&& f) {
+	auto rms = [&](auto&& fun) {
 		double e = std::accumulate(gistemp_v4.begin(), gistemp_v4.end(), 0.0,
 			[&](double acc, Sample const& sample) {
-				return acc + std::pow(sample.second - f(sample.first), 2); }); // square
+				return acc + std::pow(sample.second - fun(sample.first), 2); }); // square
 		e /= (double)gistemp_v4.size(); // mean
 		return std::sqrt(e); // root
 	};
@@ -223,12 +223,13 @@ int main(int argc, char** argv) {
 	// general, as it reduces the complexity of the actual problem we are
 	// trying to solve...
 
-	// The variable rms is a lambda function, but it is unspecified what
-	// the type will be. If you want to assign a lambda to a variable, use
-	// an std::function. Any function pointer or lambda can be saved in it.
-	// When calling f(2021.16) it passes the argument 2021.16 to the
-	// function saved in the std::function.  If no function is saved (like
-	// it is after using the default constructor), calling it does nothing.
+	// (The function returned by) rms is a lambda function, but it is
+	// unspecified what the type will be. If you want to assign a lambda to
+	// a variable, use an std::function. Any function pointer or lambda can
+	// be saved in it.  When calling f(2021.16) it passes the argument
+	// 2021.16 to the function saved in the std::function.  If no function
+	// is saved (like it is after using the default constructor), calling
+	// it does nothing.
 	std::function<double(double)> f;
 
 	double err = std::numeric_limits<double>::infinity();

@@ -21,13 +21,13 @@
 
 class Person {
 public:
-	explicit Person(char const* name) : name(name) {}
+	explicit Person(char const* fullname) : name(fullname) {}
 	std::string name;
 };
 
 class Administration {
 public:
-	explicit Administration(std::initializer_list<std::shared_ptr<Person>> l)
+	Administration(std::initializer_list<std::shared_ptr<Person>> l)
 		: people(l.begin(), l.end())
 	{}
 

@@ -1,5 +1,11 @@
 add_executable(20210125_smart_pointers 20210125_smart_pointers.cpp)
+do_clang_tidy(20210125_smart_pointers
+	-modernize-make-shared,
+	-modernize-make-unique,
+)
+
 add_executable(20210201_raii 20210201_raii.cpp)
+do_clang_tidy(20210201_raii)
 
 add_executable(20210208_atomic 20210208_atomic.cpp)
 find_package(Threads REQUIRED)
@@ -12,17 +18,37 @@ endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_link_libraries(20210208_atomic atomic)
 endif()
+do_clang_tidy(20210208_atomic)
 
 add_executable(20210215_move 20210215_move.cpp)
 target_compile_features(20210215_move PRIVATE cxx_std_17)
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 	target_compile_options(20210215_move PUBLIC "-Wno-self-move")
 endif()
+do_clang_tidy(20210215_move
+	-bugprone-use-after-move,
+	-clang-diagnostic-self-move,
+	-hicpp-invalid-access-moved,
+	-hicpp-use-emplace,
+	-modernize-use-emplace,
+)
 
 add_executable(20210222_template 20210222_template.cpp)
+do_clang_tidy(20210222_template
+	-modernize-use-using,
+)
+
 add_executable(20210301_lambda 20210301_lambda.cpp)
+do_clang_tidy(20210301_lambda)
+
 add_executable(20210308_auto 20210308_auto.cpp)
+do_clang_tidy(20210308_auto
+	-hicpp-move-const-arg,
+	-modernize-loop-convert,
+)
+
 add_executable(20210315_literals 20210315_literals.cpp)
+do_clang_tidy(20210315_literals)
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES "cxx_std_20" index)
 if(${index} GREATER -1 AND NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")

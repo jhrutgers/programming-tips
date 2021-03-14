@@ -25,6 +25,13 @@ class Oss {
 public:
 	using Doses = int64_t;
 
+	// Rule of 5; use defaults or be explicit...
+	Oss() = default;
+	Oss(Oss const&) = delete;
+	Oss(Oss&&) = delete;
+	void operator=(Oss const&) = delete;
+	void operator=(Oss&&) = delete;
+
 	~Oss() {
 		assert(m_reserved == 0);
 	}
@@ -92,11 +99,11 @@ public:
 
 	// Resources may be moved, though; take the given instance's resources,
 	// make it ours and leave the given instance as an empty shell.
-	Plan(Plan&& plan) {
+	Plan(Plan&& plan) noexcept {
 		*this = std::move(plan);
 	}
 
-	Plan& operator=(Plan&& plan) {
+	Plan& operator=(Plan&& plan) noexcept {
 		storage.giveup(m_reserved);
 		m_reserved = plan.m_reserved;
 		plan.m_reserved = 0;
