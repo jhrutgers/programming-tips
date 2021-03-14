@@ -50,8 +50,6 @@ jobs:
             compiler: clang++
             cxx: clang++
     steps:
-      - name: bootstrap
-
       - name: checkout
         uses: actions/checkout@v2
 
