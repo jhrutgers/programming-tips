@@ -49,6 +49,7 @@ function(do_clang_tidy target)
 			"-hicpp-explicit-conversions,"
 			"-hicpp-no-array-decay,"
 			"misc-*,"
+			"-misc-non-private-member-variables-in-classes,"
 			"-misc-unused-parameters,"
 			"modernize-*,"
 			"-modernize-use-nodiscard,"
