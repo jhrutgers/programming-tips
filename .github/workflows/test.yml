@@ -23,7 +23,7 @@ jobs:
         buildtype: [Debug, Release]
     steps:
       - name: bootstrap
-        run: sudo apt install ${{ matrix.compiler }} valgrind cppcheck
+        run: sudo apt install ${{ matrix.compiler }} valgrind cppcheck clang-tidy
 
       - name: checkout
         uses: actions/checkout@v2
