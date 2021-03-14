@@ -39,6 +39,7 @@ function(do_clang_tidy target)
 			"clang-analyzer-*,"
 			"concurrency-*,"
 			"cppcoreguidelines-*,"
+			"-cppcoreguidelines-avoid-magic-numbers,"
 			"-cppcoreguidelines-owning-memory,"
 			"-cppcoreguidelines-pro-bounds-array-to-pointer-decay,"
 			"-cppcoreguidelines-pro-bounds-pointer-arithmetic,"
@@ -50,11 +51,15 @@ function(do_clang_tidy target)
 			"misc-*,"
 			"-misc-unused-parameters,"
 			"modernize-*,"
+			"-modernize-use-nodiscard,"
 			"-modernize-pass-by-value,"
+			"-modernize-use-trailing-return-type,"
 			"-modernize-unary-static-assert,"
 			"portability-*,"
 			"readability-*,"
 			"-readability-braces-around-statements,"
+			"-readability-convert-member-functions-to-static,"
+			"-readability-magic-numbers,"
 			${ARGN}
 		)
 		set(DO_CLANG_TIDY "${CLANG_TIDY_EXE}" "${CLANG_TIDY_CHECKS}"
