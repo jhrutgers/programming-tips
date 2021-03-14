@@ -264,7 +264,7 @@ int main(int argc, char** argv) {
 	unsigned long iterations = 1000000;
 	try {
 		if(argc > 1)
-			iterations = std::max(1ul, std::stoul(argv[1]));
+			iterations = std::max(1UL, std::stoul(argv[1]));
 	} catch(...) {
 	}
 

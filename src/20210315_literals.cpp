@@ -176,7 +176,7 @@ int main()
 	// readability. They are ignored by the compiler.
 	long double d66_bpp  =   1'985'326L  / 208.0L;
 	double      pvda_bpp =  15'890'202LL / 105.;
-	float       sp_bpp   =     178'223   /  32.f;
+	float       sp_bpp   =     178'223   /  32.F;
 	print_density("D66", d66_bpp);
 	print_density("PvdA", pvda_bpp);
 	print_density("SP", sp_bpp);

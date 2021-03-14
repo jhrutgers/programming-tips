@@ -83,7 +83,7 @@ auto election_2016(std::unique_ptr<Campaign> const& stronger_together, std::uniq
 	// The return type of this function will be a Dirt*, which is an
 	// unguarded/naked pointer. However, when speech is going out of
 	// scope, the std::unique_ptr will delete the object...
-	auto p = speech.get();
+	auto* p = speech.get();
 	return p;
 }
 

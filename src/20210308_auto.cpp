@@ -98,8 +98,11 @@ int main()
 	// improves:
 	//
 	// std::map<int, std::string>* jezero = new std::map<int, std::string>(...);
-	auto jezero = new std::map<int, std::string>({/* ... */});
+	auto* jezero = new std::map<int, std::string>({/* ... */});
 	delete jezero; // "Who needs a map if you got lasers..."
+
+	// Note that the * may be omitted in the example above -- auto jazero = new
+	// ... is identical --, but this may make it slightly more readable.
 
 	// Similarly, it is crystal clear to what auto will be deducted.
 	//
@@ -107,13 +110,13 @@ int main()
 	auto moxie = std::make_shared<int>(02);
 
 	// std::string* mastcam_z = new std::string(...);
-	auto mastcam_z = new std::string("forest");
+	auto* mastcam_z = new std::string("forest");
 	delete mastcam_z; // "Nah, don't need it, we are looking for dust and rocks..."
 
 	// This is questionable. 'new auto' is resolved based on the
 	// initializer. In this case, you may guess wrong what the type would
 	// be... So, don't.
-	auto rimfax = new auto("oil");
+	auto* rimfax = new auto("oil");
 	// This is probably not what you expect.
 	static_assert(std::is_same<decltype(rimfax), char const**>::value, "");
 	delete rimfax; // "Nah, don't need it, we are looking for water..."

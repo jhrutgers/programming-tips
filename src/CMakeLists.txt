@@ -2,10 +2,13 @@ add_executable(20210125_smart_pointers 20210125_smart_pointers.cpp)
 do_clang_tidy(20210125_smart_pointers
 	-modernize-make-shared,
 	-modernize-make-unique,
+	-readability-qualified-auto,
 )
 
 add_executable(20210201_raii 20210201_raii.cpp)
-do_clang_tidy(20210201_raii)
+do_clang_tidy(20210201_raii
+	-bugprone-exception-escape,
+)
 
 add_executable(20210208_atomic 20210208_atomic.cpp)
 find_package(Threads REQUIRED)
