@@ -1,10 +1,6 @@
-name: test
+name: test-fast
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
   workflow_dispatch:
 
 defaults:
@@ -21,8 +17,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        compiler: [g++-7, g++-8, g++-9, g++-10]
-        buildtype: [Debug, Release]
+        compiler: [g++-7, g++-10]
+        buildtype: [Debug]
     steps:
       - name: bootstrap
         run: sudo apt install ${{ matrix.compiler }} valgrind cppcheck clang-tidy
@@ -47,24 +43,14 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        compiler: [g++-10, clang++, llvm11]
-        buildtype: [Debug, Release]
+        compiler: [clang++]
+        buildtype: [Release]
         include:
-          - os: macos-latest
-            compiler: g++-10
-            cxx: g++-10
-            package: gcc@10
           - os: macos-latest
             compiler: clang++
             cxx: clang++
-          - os: macos-latest
-            compiler: llvm11
-            cxx: /usr/local/opt/llvm@11/bin/clang++
-            package: llvm@11
     steps:
       - name: bootstrap
-        if: ${{ matrix.package != '' }}
-        run: brew install ${{ matrix.package }}
 
       - name: checkout
         uses: actions/checkout@v2
@@ -87,7 +73,7 @@ jobs:
       matrix:
         os: [windows-latest]
         compiler: [VS2019]
-        buildtype: [Debug, Release]
+        buildtype: [Debug]
         include:
           - os: windows-latest
             compiler: VS2019
