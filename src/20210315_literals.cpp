@@ -67,7 +67,7 @@ std::string operator""_denk(char const* fact, size_t size) {
 }
 
 std::string operator""_30(char const* fact, size_t size) {
-	return std::regex_replace(fact, std::regex("back .*"), "more destruction. Who believes science anyway?");
+	return std::regex_replace(fact, std::regex("back .*"), "more destruction. Who believes science anyway?\"");
 }
 
 struct Volt {
