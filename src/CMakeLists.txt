@@ -75,6 +75,10 @@ if(MSVC)
 	)
 endif()
 
+add_executable(20210322_tuple 20210322_tuple)
+do_clang_tidy(20210322_tuple)
+target_compile_features(20210322_tuple PRIVATE cxx_std_17)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -110,5 +114,6 @@ if(TIPS_TESTS)
 	tip_test(20210301_lambda 955 1000)
 	tip_test(20210308_auto 0)
 	tip_test(20210315_literals 0)
+	tip_test(20210322_tuple 0)
 endif()
 
