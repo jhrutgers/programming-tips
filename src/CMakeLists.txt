@@ -76,7 +76,7 @@ if(MSVC)
 endif()
 
 add_executable(20210322_tuple 20210322_tuple)
-do_clang_tidy(20210322_tuple)
+#do_clang_tidy(20210322_tuple) # Hmm, seems to segfault on the packs...
 target_compile_features(20210322_tuple PRIVATE cxx_std_17)
 
 if(TIPS_TESTS)
