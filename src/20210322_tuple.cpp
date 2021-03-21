@@ -29,7 +29,8 @@ struct GroenLinks { float garden_chairs; };
 
 // Extract the member of a party (struct) using structured binding, regardless
 // of the struct type and member name.
-static auto seats(auto&& party) {
+template <typename T>
+static auto seats(T&& party) {
 	auto [ seats ] = party;
 	return std::lround(seats);
 }
