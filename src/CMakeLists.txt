@@ -75,9 +75,19 @@ if(MSVC)
 	)
 endif()
 
-add_executable(20210322_tuple 20210322_tuple)
+add_executable(20210322_tuple 20210322_tuple.cpp)
 #do_clang_tidy(20210322_tuple) # Hmm, seems to segfault on the packs...
 target_compile_features(20210322_tuple PRIVATE cxx_std_17)
+
+add_executable(20210329_variant 20210329_variant.cpp)
+do_clang_tidy(20210329_variant
+	-cppcoreguidelines-no-malloc,
+	-cppcoreguidelines-pro-type-union-access,
+	-cppcoreguidelines-pro-type-vararg,
+	-hicpp-no-malloc,
+	-hicpp-vararg
+)
+target_compile_features(20210329_variant PRIVATE cxx_std_17)
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
@@ -115,5 +125,6 @@ if(TIPS_TESTS)
 	tip_test(20210308_auto 0)
 	tip_test(20210315_literals 0)
 	tip_test(20210322_tuple 0)
+	tip_test(20210329_variant 0)
 endif()
 

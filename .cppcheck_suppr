@@ -6,3 +6,4 @@ noExplicitConstructor:src/20210125_smart_pointers.cpp
 throwInNoexceptFunction:src/20210201_raii.cpp
 noExplicitConstructor:src/20210215_move.cpp
 unusedStructMember:src/20210322_tuple.cpp
+noExplicitConstructor:src/20210329_variant.cpp
