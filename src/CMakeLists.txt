@@ -81,6 +81,7 @@ target_compile_features(20210322_tuple PRIVATE cxx_std_17)
 
 add_executable(20210329_variant 20210329_variant.cpp)
 do_clang_tidy(20210329_variant
+	-bugprone-exception-escape,
 	-cppcoreguidelines-no-malloc,
 	-cppcoreguidelines-pro-type-union-access,
 	-cppcoreguidelines-pro-type-vararg,
