@@ -11,7 +11,9 @@
  * track the active member, properly destructs the previous when switching the
  * active member, and throws exceptions when accessed wrong.
  *
- * Scroll down to main() and follow the execution flow.
+ * Scroll down to main() and follow the execution flow. Though not required,
+ * you may run the program to check if your understanding of the execution is
+ * correct.
  */
 
 // This is the header you need for std::variant.
@@ -75,11 +77,16 @@ void run<std::monostate&>(std::monostate& cpu)
 
 int main()
 {
-	// First of all, what is wrong with good old unions?  Members in a
-	// union share the same memory. There can only be one active member (as
-	// already said, that must be tracked by the programmer). There is a
-	// limitation on data types in a union: they cannot have custom
-	// copy/move constructors/assignment or destructor.
+	// It may happen that computing resources are unexpectedly scarce.  If
+	// your local chip supplier is not able to provide you with more
+	// silicon, you may want to optimize resource usage. One method is to
+	// use a union to optimize memory usage.
+
+	// What is wrong with good old unions?  Members in a union share the
+	// same memory. There can only be one active member (as already said,
+	// that must be tracked by the programmer). There is a limitation on
+	// data types in a union: they cannot have custom copy/move
+	// constructors/assignment or destructor.
 	union {
 		// These two variables are unrelated.
 		long thumb;
@@ -98,6 +105,8 @@ int main()
 	printf("union's double: %g\n", down.core);
 	// But this is undefined behavior. Leave it commented out!
 //	printf("union's long: %ld\n", down.thumb);
+	// I'm sure you want to hold on to your core -- it's hard to get a new
+	// one these days. Anyway, this is error-prone.
 
 
 	// C++17 has a type-safe variant of unions: std::variant.
@@ -111,6 +120,10 @@ int main()
 	// In the assignment below, the double becomes the 'active field', as
 	// a double is assigned to the tuple.
 	up = 25.4;
+
+	// Think about that happens when you would write 42 to up. Would it be
+	// cast to 42L or 42.? What would be the active field? This is tricky.
+	// We will come back to that later on.
 
 	try {
 		// Access of the member can be done by type...
@@ -126,8 +139,11 @@ int main()
 
 	// Let's have a look what the variant API gives us.
 
-	// Default initialized: this will default-construct the first type (Intel).
+	// Default initialized: this will default-construct the first type
+	// (Intel).
 	std::variant<Intel, ARM> cpu0;
+	// Because of shortages, we can't determine if we would have one or the
+	// other in the end.  This way, we can have either one.
 
 	// Intermezzo: std::visit calls the first parameter (a Callable thing)
 	// for the held value in the variant. In this case, the lambda is
@@ -138,7 +154,10 @@ int main()
 
 	// Copy-construct one of the variant's types.
 	std::variant<Intel, ARM> cpu1{ARM{}};
-	std::variant<Intel, ARM, ARM> cpu2{Intel{jmp()}};
+	std::variant<ARM, Intel, ARM> cpu2{Intel{jmp()}};
+	// Note that a variant allows you to have the same type multiple times.
+	// However, don't do it. It does not make sense and breaks
+	// access-by-type later on.
 
 	std::visit([](auto&& cpu) { std::cout << "cpu1: "; run(cpu); }, cpu1);
 	std::visit([](auto&& cpu) { std::cout << "cpu2: "; run(cpu); }, cpu2);
@@ -158,9 +177,10 @@ int main()
 	// printf() line before while writing the standard).
 	//
 	// Moreover, even if it would work properly, it is still questionable
-	// what would be saved in the variant, as the conversion path taken
-	// (and therefore which value is stored) is not reported while
-	// compiling, you could be tricked.
+	// what would be saved in the variant (think back of the 42L/42.
+	// question above). As the conversion path taken (and therefore which
+	// value is stored) is not reported while compiling, you could be
+	// tricked.
 	//
 	// So, don't use the converting constructor. Only initialize explicitly
 	// the correct type.
@@ -173,8 +193,8 @@ int main()
 	// but you know when the dummy type is used. You could use your own
 	// type to indicate the 'empty' state.
 	//
-	// * There are a few rare corner case, though, when exceptions are thrown
-	//   during specific operations. But ignore that for now.
+	// * There are a few rare corner case, though, when exceptions are
+	//   thrown during specific operations. But ignore that for now.
 	std::variant<std::monostate, Intel, ARM> cpu5;
 	std::visit([](auto&& cpu) { std::cout << "cpu5: "; run(cpu); }, cpu5);
 
@@ -185,29 +205,37 @@ int main()
 	cpu5 = Intel{jmp()};
 	std::visit([](auto&& cpu) { std::cout << "cpu5 assigned: "; run(cpu); }, cpu5);
 
-	// Assigning will do a copy or move into the variant. You can also
-	// construct in-place, by using emplace() instead:
-	cpu5.emplace<ARM>(stm());
-	std::visit([](auto&& cpu) { std::cout << "cpu5 emplaced: "; run(cpu); }, cpu5);
-
 	// As with the converting constructor, there is also a converting
 	// assignment.  However, it suffers from the same issues as the
 	// constructor, so don't use.  Always be explicit which type you need.
 //	cpu5 = jmp();
 
+	// Assigning will do a copy or move into the variant. You can also
+	// construct in-place, by using emplace() instead. And you cannot be
+	// tricked by the converting assignment.
+	cpu5.emplace<ARM>(stm());
+	std::visit([](auto&& cpu) { std::cout << "cpu5 emplaced: "; run(cpu); }, cpu5);
+
 	// To determine what is currently in the variant, you could just try
-	// and catch the exception.  There are other ways to check.
+	// and catch the exception.  However, there are other ways to check.
+	// This only works if the type is unique (so it won't work on cpu2).
 	if(std::holds_alternative<ARM>(cpu5)) {
 		std::cout << "Yes! Got an nVidia! Well... Err... Confused." << std::endl;
 		run(std::get<ARM>(cpu5));
 	}
 
 	// By index is not as nice as by type, as you need to know the order of
-	// the types. So, prefer the other one.
+	// the types. So, prefer the other one. However, this would also work
+	// on cpu2.
 	if(cpu5.index() == 2) {
 		std::cout << "Yes! At least I got something at index " << cpu5.index() << std::endl;
 		run(std::get<2>(cpu5));
 	}
+
+	// Summarized, never use unions anymore; use std::variant instead. It
+	// will still save memory, but definitely reduce bugs. There is a minor
+	// overhead, as the saved type is stored and checked when accessing the
+	// variant, but that's worth the benefit of improved robustness.
 }
 
 /*
@@ -223,7 +251,7 @@ int main()
  * - What is wrong with std::variant's converting constructor/assignment?
  *   http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0608r3.html
  * - Why can't run() in the form of an Abbreviated function template (C++20) be
- *   passed argument instead of the lambda for std::visit? They seem
+ *   passed as argument instead of the lambda for std::visit? They seem
  *   equivalent... Related?
  *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64194
  */
@@ -235,9 +263,9 @@ int main()
 
 
 //////////////////////////////////////
-// Some type name demangling here
-//
 // vvv Ignore this part vvv
+//
+// Some type name demangling here
 
 #if defined(__GNUC__) || defined(__clang__)
 #  include <cxxabi.h>
