@@ -20,9 +20,11 @@
 #include <variant>
 
 // A few headers for this example.
+#include <algorithm>
 #include <cstdio>
 #include <exception>
 #include <iostream>
+#include <string>
 #include <typeinfo>
 #include <utility>
 
@@ -271,6 +273,8 @@ int main()
 #  include <cxxabi.h>
 #endif
 
+#include <regex>
+
 template <typename T>
 static std::string name()
 {
@@ -278,14 +282,15 @@ static std::string name()
 #  if defined(__GNUC__) || defined(__clang__)
 	int status = 1;
 	char* demangled = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, &status);
-	std::string res = demangled;
+	std::string n_ = demangled;
 	free(demangled);
 	if(status)
 		throw std::runtime_error("Cannot demangle");
-	return res;
+	char const* n = n_.c_str();
 #  else
-	return typeid(T).name();
+	char const* n = typeid(T).name();
 #  endif
+	return std::regex_replace(n, std::regex("^struct "), "");
 #else
 #  error "Need RTTI for this example"
 	return "?";
