@@ -91,7 +91,7 @@ do_clang_tidy(20210329_variant
 target_compile_features(20210329_variant PRIVATE cxx_std_17)
 
 add_executable(20210405_pack 20210405_pack.cpp)
-#do_clang_tidy(20210405_pack)
+do_clang_tidy(20210405_pack)
 target_compile_features(20210405_pack PRIVATE cxx_std_17)
 
 if(TIPS_TESTS)
