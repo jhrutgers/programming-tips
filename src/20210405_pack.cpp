@@ -2,15 +2,17 @@
  * Parameter packs
  *
  * You know templates, right? So, std::set has a template parameter, that
- * specifies what the type within the set it. And std::tuple can have multiple
+ * specifies what the type within the set is. And std::tuple can have multiple
  * of them.  Well, std::tuple can have any number of template parameters... We
  * dive into this topic: parameter packs.
  *
- * Parameter packs exist since C++11, but along the way, some syntax changed to
- * make using them a bit easier. This example uses C++17.
+ * Parameter packs exist since C++11, but along the way, some syntax and
+ * utilities changed to make using them a bit easier. This example uses C++17.
+ * The great thing about these packs is that it's all processed at compile
+ * time, which is the case for all template meta programming.
  *
- * Follow the sequence of navigation marks in this file. Make sure to follow
- * the right sequence, or you may get stuck. Start with {alpha}.
+ * Follow the sequence of navigation markers in this file. Make sure to follow
+ * the right sequence, or you may get stuck for a week or so. Start with {alfa}.
  */
 
 // Parameter packs are part of the language. These are just for this example.
@@ -48,7 +50,13 @@ template <typename... C>
 struct has_container { constexpr static bool value = false; };
 
 // This specialization passes the first type through is_container, and
-// recursively calls itself to check for the rest.
+// recursively calls itself to check for the rest. Remember, this is recursion
+// at compile time. As a result when called like this:
+//
+// has_container<int*,float,Container<double>&,std::string>::value
+//
+// the value with in the specified has_container evaluates to true, as at least
+// one type within C is a Container type.
 template <typename C0, typename... C>
 struct has_container<C0, C...> {
 	constexpr static bool value =
@@ -57,6 +65,7 @@ struct has_container<C0, C...> {
 };
 
 // Helper to make using has_container a bit simpler. This is variable template.
+// It just let's you omit the ::value part of the expression exemplified above.
 template <typename... C>
 inline constexpr bool has_container_v = has_container<C...>::value;
 // Continue to the next marker.
@@ -93,7 +102,7 @@ public:
 	// contained.  For this, we give it our parameter pack T. However, we
 	// can't pass the pack as is, we have to unpack it:
 	std::tuple<T...> cargo;
-	// Here, T... is unpacked resulting in the elements of the pack,
+	// Here, T... is unpacked, resulting in the elements of the pack,
 	// separated by commas. So, in case of Container<int,double>,
 	// std::tuple<T...> will be unpacked to std::tuple<int,double>.
 
@@ -107,7 +116,7 @@ public:
 	// parameter, it is unpacked to int&&& and double const*&&. The double
 	// & denotes a universal reference; it will accept all types of
 	// references, such as lvalues and std::move()d objects. This is a
-	// common way of defining such generic list of arguments.
+	// common way of defining such a generic list of arguments.
 	constexpr Container(S&&... stuff)
 		// In this case, we forward all arguments as is to the
 		// constructor of our tuple. We use std::forward() to preserve
@@ -115,7 +124,7 @@ public:
 		// this is perfect forwarding. Without it, we might copy data
 		// more often than required.  But we have the parameter pack S
 		// in it.  The full expression in which the pack is used, is
-		// unpacked before forwarding to cargo.
+		// unpacked before forwarding to cargo as separate parameters.
 		: cargo{std::forward<S>(stuff)...}
 	{}
 	// Navigate to the next marker.
@@ -134,7 +143,7 @@ public:
 	// size_t numbers.
 	void inspect(std::index_sequence<Indices...> indices = std::index_sequence<Indices...>()) const
 	{
-		// Almost there, we have to unpack Indices and pass the values
+		// Almost there. We have to unpack Indices and pass the values
 		// to std::get. For this, we use a fold expression. There are
 		// multiple forms, but the one we use here is this:
 		//
@@ -145,17 +154,16 @@ public:
 		//
 		// ( expr_0 operator expr_1 operator expr_2 )
 		//
-		// The comma is used as operator. It does not do anything,
+		// The comma is used as operator. It doesn't do anything,
 		// except for separating expressions. See how Indices is
 		// unpacked, and std::get is now called for every element in
 		// the pack.
 		((std::cout << std::get<Indices>(cargo) << " "), ...);
 
-		// Print a newline if the pack has a size larger than 0.
-		if(sizeof...(Indices))
-			std::cout << std::endl;
+		// Print the final newline.
+		std::cout << std::endl;
 
-		// Go to the next mark.
+		// Go to the next marker.
 	}
 
 	void inspect() const
@@ -184,9 +192,9 @@ public:
 		// parameters must be a compile time constant expression, but
 		// size() was defined as such an expression; it is constexpr.
 		// There are a few details to know about constexpr, but that's
-		// for later.
+		// for another day.
 		//
-		// Continue to the next mark.
+		// Continue to the next marker.
 	}
 
 	// {golf}
@@ -204,7 +212,10 @@ public:
 		// overload will be discarded by the compiler while looking
 		// which add() overload is to be called.  This is called
 		// Substitution Failure Is Not An Error (SFINAE); you won't get
-		// a compile error when that happens. Continue to the next mark.
+		// a compile error when that happens. SFINAE is very powerful
+		// in controlling the type that is supported by template
+		// parameters. Let's discuss it in detail another day.
+		// Continue to the next marker.
 	constexpr auto add(S&&... more_stuff) const
 	{
 		// {hotel}
@@ -225,13 +236,13 @@ public:
 	}
 
 	// The add() above should not put Containers in Containers.  This
-	// overload allows to add the contents of another container to our one.
+	// overload allows to add the contents of another Container to our one.
 	template <typename... C>
 	constexpr auto add(Container<C...> const& container) const
 	{
 		return Container<T..., C...>(std::tuple_cat(cargo, container.cargo));
 	}
-	// However, the typename... S from the other add() captures everything,
+	// However, the typename... S of the other add() captures everything,
 	// including Containers. The compiler might pick the wrong overload
 	// when adding a Container.  Here, the std::enable_if_t thing comes
 	// into play, which was also used with the constructor.  Continue to
@@ -252,35 +263,36 @@ public:
 // will be Container<int,double>, and not Container<int&,double volatile>, what
 // it is by default.
 //
-// Wondering what A0 is doing there? Don't ask... Bugs...
+// Wondering what S0 is doing there? Don't ask... Bugs...
 // https://stackoverflow.com/questions/43430921/deduction-guides-and-variadic-class-templates-with-variadic-template-constructor
-template <typename A0, typename... A>
-Container(A0&& stuff0, A&&... stuff) -> Container<std::decay_t<A0>, std::decay_t<A>...>;
+template <typename S0, typename... S>
+Container(S0&& stuff0, S&&... stuff) -> Container<std::decay_t<S0>, std::decay_t<S>...>;
+
 
 int main()
 {
-	// {alpha}
+	// {alfa}
 	// Consider the case that you want to have some Container that holds
 	// arbitrary objects. This is how you want to use it:
 	Container<int, double, std::string> sometimes_red{1, 2.3, "4"};
 
 	// This Container now holds three objects, of the types specified as
-	// template arguments, and initialized using its constructor.
-	// Another container could hold only one big value:
+	// template arguments, and initialized using its constructor.  Another
+	// container could hold only one big value:
 	auto probably_blue = Container{5e67L};
 
-	// The template type of Container is now deducted as Container<long double>,
-	// which will be filled in for auto.
+	// The template type of Container is now deducted as Container<long
+	// double>, which will be filled in for the auto placeholder.
 
 	// Now, the question would be how to create such a class? Continue with
 	// the next marker: {bravo}.
 
 	// {charlie}
 	// Now we have Containers, we can inspect them. We will define a
-	// function that prints the contents to stdout. Go to the next marker
-	// for details.
+	// function that prints the contents to stdout.
 	std::cout << "sometimes red: ";
 	sometimes_red.inspect();
+	// Go to the next marker for details.
 
 	// {foxtrot}
 	// We can manually specify the sequence, and it does not have to be an
@@ -290,6 +302,9 @@ int main()
 	often_purple.inspect<1,0,0,1>();
 
 	// Containers should be full. Assume we want to add stuff to it.
+	// Actually, you cannot dynamically add a type to an existing object,
+	// so this will create a new Container with the requested types and
+	// content.
 	auto rarely_black = probably_blue.add("more", true, "value");
 	std::cout << "rarely black: " << std::boolalpha;
 	rarely_black.inspect();
@@ -308,9 +323,13 @@ int main()
 
 	// If we keep packing, it might become huge:
 	std::tuple ever_given{commonly_white, often_purple, Container("ever", "green")};
+
 	// By now, you should be able for figure out this one by yourselves. If
 	// not, continue to the next marker.
-	std::apply([](auto&&... container) { (container.inspect(), ...);} , ever_given);
+	std::cout << "ever given:" << std::endl;
+	std::apply([](auto&&... container) { (container.inspect(), ...); }, ever_given);
+
+	// Now, let's move and run the program.
 }
 
 /*
@@ -320,5 +339,8 @@ int main()
  * https://en.cppreference.com/w/cpp/utility/integer_sequence
  * https://en.cppreference.com/w/cpp/language/variable_template
  * https://en.cppreference.com/w/cpp/language/class_template_argument_deduction
+ * https://en.cppreference.com/w/cpp/language/reference (especially Reference collapsing)
+ *
+ * Pfff, that was an overload of information... Oh no, I unpacked 'information'.
  */
 
