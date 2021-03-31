@@ -9,3 +9,4 @@ unusedStructMember:src/20210322_tuple.cpp
 noExplicitConstructor:src/20210329_variant.cpp
 noExplicitConstructor:src/20210405_pack.cpp
 unusedStructMember:src/20210405_pack.cpp
+unmatchedSuppression:src/20210405_pack.cpp
