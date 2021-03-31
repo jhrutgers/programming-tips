@@ -7,3 +7,5 @@ throwInNoexceptFunction:src/20210201_raii.cpp
 noExplicitConstructor:src/20210215_move.cpp
 unusedStructMember:src/20210322_tuple.cpp
 noExplicitConstructor:src/20210329_variant.cpp
+noExplicitConstructor:src/20210405_pack.cpp
+unusedStructMember:src/20210405_pack.cpp
