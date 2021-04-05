@@ -94,6 +94,9 @@ add_executable(20210405_pack 20210405_pack.cpp)
 do_clang_tidy(20210405_pack)
 target_compile_features(20210405_pack PRIVATE cxx_std_17)
 
+add_executable(20210412_brace_init 20210412_brace_init.cpp)
+#do_clang_tidy(20210412_brace_init)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -132,5 +135,6 @@ if(TIPS_TESTS)
 	tip_test(20210322_tuple 0)
 	tip_test(20210329_variant 0)
 	tip_test(20210405_pack 0)
+	tip_test(20210412_brace_init 0)
 endif()
 
