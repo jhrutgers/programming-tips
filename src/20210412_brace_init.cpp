@@ -93,7 +93,12 @@ public:
 	// friend, declared in the same scope as Contract is.
 	friend std::ostream& operator<<(std::ostream& stream, Contract const& contract)
 	{
-		stream.imbue(std::locale("en_US.UTF-8"));
+		// Hmm... locales... dirty...
+		auto try_locale = [&](char const* l) {
+			try { stream.imbue(std::locale(l)); return true;
+			} catch(...) { return false; }
+		};
+		try_locale("en_US.UTF-8") || try_locale("") || try_locale("C");
 
 		auto result = contract.m_share.value() / contract.m_initialValue - 1.0;
 		auto profit = contract.profitToInvestor();
