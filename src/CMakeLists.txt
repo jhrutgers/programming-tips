@@ -98,6 +98,9 @@ add_executable(20210412_brace_init 20210412_brace_init.cpp)
 do_clang_tidy(20210412_brace_init
 	-clang-diagnostic-vexing-parse
 )
+if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+	target_compile_options(20210412_brace_init PUBLIC "-Wno-vexing-parse")
+endif()
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)

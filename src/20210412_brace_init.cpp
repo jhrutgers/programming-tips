@@ -14,6 +14,8 @@
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
+#include <locale>
+#include <cmath>
 #include <string>
 
 // This is a simple struct, no user-defined constructor.
@@ -34,7 +36,7 @@ public:
 		: m_name{name}
 	{}
 
-	explicit Investor(std::string&& name) noexcept
+	explicit Investor(std::string&& name)
 		: m_name{std::move(name)}
 	{}
 
@@ -90,24 +92,32 @@ public:
 	double profitToBank() const     { return m_rate * m_initialValue; }
 
 	// On a side note, this is not a member function of Contract... It's a
-	// friend, declared in the same scope as Contract is.
+	// friend, declared in the same scope as Contract is. This function
+	// doesn't really contribute to main topic, but proper UI always takes
+	// a lot of code... You may skip this function.
 	friend std::ostream& operator<<(std::ostream& stream, Contract const& contract)
 	{
-		// Hmm... locales... dirty...
-		auto try_locale = [&](char const* l) {
-			try { stream.imbue(std::locale(l)); return true;
-			} catch(...) { return false; }
+		class moneypunct : public std::moneypunct<char> {
+		protected:
+			char do_thousands_sep()      const final { return '\''; }
+			std::string do_grouping()    const final { return "\3"; }
+			std::string do_curr_symbol() const final { return "$"; }
+			int do_frac_digits()         const final { return 0; }
+			pattern do_pos_format()      const final { return { {symbol, space, value} };}
+			pattern do_neg_format()      const final { return { {symbol, space, sign, value} };}
 		};
-		try_locale("en_US.UTF-8") || try_locale("") || try_locale("C");
+
+		stream.imbue(std::locale(stream.getloc(), new moneypunct{}));
 
 		auto result = contract.m_share.value() / contract.m_initialValue - 1.0;
 		auto profit = contract.profitToInvestor();
+		stream.precision(0);
 		return stream
-			<< std::showbase
+			<< std::showbase << std::fixed
 			<< "Share of " << contract.m_share.company.name
-			<< " changed value by " << result * 100.0 << "% to " << std::put_money(contract.m_share.value() * 100.0) << "; "
-			<< contract.m_bank.name << " earns " << std::put_money(contract.profitToBank() * 100.0) << ", "
-			<< contract.m_investor.name() << (profit >= 0 ? " earns " : " loses ") << std::put_money(std::abs(profit * 100.0))
+			<< " changed value by " << result * 100.0 << "% to " << std::put_money(contract.m_share.value()) << "; "
+			<< contract.m_bank.name << " earns " << std::put_money(contract.profitToBank()) << ", "
+			<< contract.m_investor.name() << (profit >= 0 ? " earns " : " loses ") << std::put_money(std::fabs(profit))
 			<< std::endl;
 	}
 
@@ -124,7 +134,7 @@ int main()
 	// Initializing structs/classes are done in several ways.  For example,
 	// Bank does not have a constructor, so you can initialize its fields:
 	Bank cs = {"Credit Suisse"};
-	// As a draw-back, you need to know the structure of the data type.
+	// As a drawback, you need to know the structure of the data type.
 
 	// If you have a constructor, you can do this:
 	Investor james("Simons");
@@ -182,7 +192,8 @@ int main()
 
 	std::cout << "Year 3" << std::endl;
 
-	// The brace initializer can also be used for arrays.
+	// The brace initializer can also be used for arrays. Whoa ha, we can
+	// use that for our benefit!
 	Contract contracts[]{
 		contract1, contract2, contract3,
 		contract1, contract2, contract3,
@@ -198,7 +209,8 @@ int main()
 	// contracts everywhere... What could possibly go wrong?
 	//
 	// This is really good work! The society really benefits by doing this.
-	// Therefore, we reward traders with vast amounts of money...
+	// These people really contribute to our economy.  Therefore, we reward
+	// traders with vast amounts of money...
 
 	viac.value *= 0.5; // 50 % loss
 	// Uh oh...
@@ -209,16 +221,16 @@ int main()
 		total_profit += contract.profitToInvestor();
 	}
 
-	std::cout << "Total profit: " << std::put_money(total_profit * 100.0) << std::endl;
+	std::cout << "Total profit: " << std::put_money(total_profit) << std::endl;
 	// Err, as bill got bankrupt, the losses are for the banks. And if
-	// banks go bankrupt, the losses are for the society. Great, if you
-	// earn money, you get rich, if you lose money, others will pay for it.
-	// Sounds fair? Well, just a funny story of 2008, right? Won't happen
-	// again.
+	// banks go bankrupt, the losses are for the society. Great, with
+	// borrowed money, you can earn money, and you get rich. If you lose
+	// money, others will pay for it.  Sounds fair? Well, just a funny
+	// story of 2008, right? Won't happen again.
 
 
 
-	// Concluded, using {} for construction (almost) always works. I would
+	// Anyway, using {} for construction (almost) always works. I would
 	// say, it is the preferred way.
 	//
 	// There is one construct that looks similar, which is an
