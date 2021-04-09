@@ -99,12 +99,13 @@ public:
 	{
 		class moneypunct : public std::moneypunct<char> {
 		protected:
-			char do_thousands_sep()      const final { return '\''; }
-			std::string do_grouping()    const final { return "\3"; }
-			std::string do_curr_symbol() const final { return "$"; }
-			int do_frac_digits()         const final { return 0; }
-			pattern do_pos_format()      const final { return { {symbol, space, value} };}
-			pattern do_neg_format()      const final { return { {symbol, space, sign, value} };}
+			char do_thousands_sep()        const final { return '\''; }
+			std::string do_grouping()      const final { return "\3"; }
+			std::string do_curr_symbol()   const final { return "$"; }
+			int do_frac_digits()           const final { return 0; }
+			std::string do_negative_sign() const final { return "-"; }
+			pattern do_pos_format()        const final { return { {symbol, space, value} };}
+			pattern do_neg_format()        const final { return { {symbol, space, sign, value} };}
 		};
 
 		stream.imbue(std::locale(stream.getloc(), new moneypunct{}));
