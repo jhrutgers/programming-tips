@@ -186,7 +186,7 @@ int main()
 	std::cout << "Year 2" << std::endl;
 	Contract contract2{nmr, bill, viac, 10'000'000., 0.02};
 	Contract contract3{gs, bill, viac, 100'000'000., 0.01};
-	viac.value *= 1.04; // 3 % growth
+	viac.value *= 1.04; // 4 % growth
 	std::cout << contract1 << contract2 << contract3;
 	// Whoo, free money... As the rate is lower than the growth, the
 	// contracts are for free! Let's do that again!
