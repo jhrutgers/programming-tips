@@ -12,3 +12,5 @@ unusedStructMember:src/20210405_pack.cpp
 unmatchedSuppression:src/20210405_pack.cpp
 unreadVariable:src/20210412_brace_init.cpp
 unmatchedSuppression:src/20210412_brace_init.cpp
+redundantAssignment:src/20210419_enums.cpp
+unreadVariable:src/20210419_enums.cpp

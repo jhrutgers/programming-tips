@@ -102,6 +102,14 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 	target_compile_options(20210412_brace_init PUBLIC "-Wno-vexing-parse")
 endif()
 
+add_executable(20210419_enums 20210419_enums.cpp)
+do_clang_tidy(20210419_enums
+	-bugprone-misplaced-widening-cast,
+	-clang-analyzer-deadcode.DeadStores,
+	-misc-misplaced-widening-cast
+)
+target_compile_features(20210419_enums PRIVATE cxx_std_17)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -141,5 +149,6 @@ if(TIPS_TESTS)
 	tip_test(20210329_variant 0)
 	tip_test(20210405_pack 0)
 	tip_test(20210412_brace_init 0)
+	tip_test(20210419_enums 2)
 endif()
 
