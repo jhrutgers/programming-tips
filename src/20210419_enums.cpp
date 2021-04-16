@@ -1,7 +1,7 @@
 ﻿/*
  * Enums
  *
- * Before you had enums, which are kind of ints with names. Since C++11, you
+ * Before, you had enums, which are kind of ints with names. Since C++11, you
  * have strongly typed enums, namely enum classes. Let's dive into the
  * differences.
  *
@@ -9,21 +9,26 @@
  * program.
  */
 
+// For enums, you don't need includes. These are just for this example.
 #include <cassert>
 #include <iostream>
 #include <type_traits>
 
-// The old unscoped enum. The name may be omitted to make the enum anonymous,
+// The old unscoped enum. The enumerators are added to the current scope.
+//
+// The name in the definition below may be omitted to make the enum anonymous,
 // in case only the enumerators are needed.
 enum Mode {
-	Reset,
-	Idle,
+	Reset,      // The first one is always 0, when not set explicitly.
+	Idle,       // Successive enumerators are by default the previous one + 1.
 	PreFlight,
 	Check,
-	Flight,
+	Flight,     // The comma at the end is not required, but it is allowed.
 };
 
-// The new scoped enum. 'enum class' is the same as 'enum struct'.
+// The new scoped enum. 'enum class' is the same as 'enum struct'. Think of an
+// enum class as the same as an enum, except that the enumerators only exist in
+// the enum name's scope (so, use Test::Deploy instead of Deploy).
 enum class Test {
 	Deploy,
 	LowSpeed,
@@ -64,7 +69,7 @@ static Speed operator ""_rpm(unsigned long long i)
 	//
 	// return Speed{i};
 
-	// This does work:
+	// This works:
 	return Speed{static_cast<std::underlying_type_t<Speed>>(i)};
 }
 
@@ -98,8 +103,8 @@ int main()
 	// Let's do some tests.
 
 	// In C++17, you can do brace-initializer-like initialization.  (OK,
-	// strictly, this is an initializer-list with one element, but it looks
-	// the same.)
+	// strictly speaking, this is an initializer-list with one element, but
+	// it looks the same.)
 	Test test{Test::Deploy};
 
 	// Since C++11, you can specify the 'scope' of the unscoped (old) enum.
@@ -118,20 +123,21 @@ int main()
 	// The old enum allows implicit conversion to integral types.
 	int i = mode;
 	// Converting from an integral type to the enum type must be explicit.
-	mode = (Mode)(i + 1);
+	mode = (Mode)(i + 1); // ...or use static_cast<Mode>(...)
 	// So, this will call the operator<< with an int argument for mode.
 	std::cout << "mode = " << mode << std::endl;
 
 
 
-	// This is a bit iffy, though. Enums are often used for explicit and
-	// named values.  In case of the Mode enum, this is unwanted and asking
-	// for troubles.
+	// Casting to an enum is a bit iffy, though. Enums are often used for
+	// explicit and named values.  In case of the Mode enum, this is
+	// unwanted and asking for troubles.
 	//
 	// However, for the Speed enum, it may be sensible to do. In this case,
 	// the enum class is a kind of special integral value; it is limited in
-	// range (uint16_t), has proper operator overloading, and has a few
-	// predefined values. So, this makes sense:
+	// range (uint16_t), has proper operator overloading (so you could add
+	// all kinds of protections), and has a few predefined values. So, this
+	// makes sense:
 	speed = 2399_rpm;
 
 	// The new enum does not allow this implicit conversion to an integral
@@ -181,5 +187,14 @@ int main()
  * Further reading:
  *
  * https://en.cppreference.com/w/cpp/language/enum
+ *
+ * Getting enumerator names from values is currently not possible in C++
+ * (without macros or compiler-specific hacks). For this, you need reflection.
+ * There is a Reflection Study Group (SG7) to investigate adding reflection to
+ * C++, but that seems far from final. If you are interested, you may browse
+ * through this:
+ *
+ * https://lists.isocpp.org/sg7/
+ * https://isocpp.org/files/papers/P2320R0.pdf
  */
 
