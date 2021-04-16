@@ -58,7 +58,7 @@ static Speed operator ""_rpm(unsigned long long i)
 {
 	// Just checking... I don't like undefined behavior, I need my CPU for
 	// a while...
-	assert(i <= static_cast<int>(Speed::MaxSpeed));
+	assert(i <= static_cast<unsigned long long>(Speed::MaxSpeed));
 
 	// Does not work: must be explicitly initialized to Speed.
 	//
