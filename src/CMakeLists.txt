@@ -110,6 +110,9 @@ do_clang_tidy(20210419_enums
 )
 target_compile_features(20210419_enums PRIVATE cxx_std_17)
 
+add_executable(20210426_sfinae 20210426_sfinae.cpp)
+#do_clang_tidy(20210426_sfinae)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -150,5 +153,6 @@ if(TIPS_TESTS)
 	tip_test(20210405_pack 0)
 	tip_test(20210412_brace_init 0)
 	tip_test(20210419_enums 2)
+	tip_test(20210426_sfinae 0)
 endif()
 
