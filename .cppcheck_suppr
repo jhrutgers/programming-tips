@@ -15,3 +15,5 @@ unmatchedSuppression:src/20210412_brace_init.cpp
 redundantAssignment:src/20210419_enums.cpp
 unreadVariable:src/20210419_enums.cpp
 unmatchedSuppression:src/20210419_enums.cpp
+unusedStructMember:src/20210426_sfinae.cpp
+unmatchedSuppression:src/20210426_sfinae.cpp

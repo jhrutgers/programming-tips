@@ -111,7 +111,10 @@ do_clang_tidy(20210419_enums
 target_compile_features(20210419_enums PRIVATE cxx_std_17)
 
 add_executable(20210426_sfinae 20210426_sfinae.cpp)
-#do_clang_tidy(20210426_sfinae)
+do_clang_tidy(20210426_sfinae
+	-readability-named-parameter
+)
+target_compile_features(20210426_sfinae PRIVATE cxx_std_17)
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
