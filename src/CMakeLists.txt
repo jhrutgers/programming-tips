@@ -116,6 +116,17 @@ do_clang_tidy(20210426_sfinae
 )
 target_compile_features(20210426_sfinae PRIVATE cxx_std_17)
 
+add_executable(20210503_bind 20210503_bind.cpp)
+#do_clang_tidy(20210503_bind
+#)
+target_compile_features(20210503_bind PRIVATE cxx_std_17)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	target_compile_options(20210503_bind PUBLIC -Wno-unused-variable -Wno-unused-but-set-variable)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+	target_compile_options(20210503_bind PUBLIC -Wno-unused-variable)
+endif()
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -157,5 +168,6 @@ if(TIPS_TESTS)
 	tip_test(20210412_brace_init 0)
 	tip_test(20210419_enums 2)
 	tip_test(20210426_sfinae 0)
+	tip_test(20210503_bind 0)
 endif()
 
