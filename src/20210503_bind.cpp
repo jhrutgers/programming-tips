@@ -141,7 +141,7 @@ int main()
 	// you can also decompose std::array and std::pair in the same way.
 	// Well, you can make your own type be tuple-like. Consider a complex
 	// class, such as ISS. Sneak peek into the internals of ISS above.
-	ISS iss;
+	ISS iss{};
 	// It has 11 members. In this case, only the Module instances are
 	// exposed for structured binding:
 	auto const& [ m1, m2, m3, m4, m5, m6 ] = iss;
