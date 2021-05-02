@@ -50,7 +50,7 @@ public:
 	// you have to do is to make sure that get<i>() is valid for all
 	// element indexes in the 'tuple'.
 	template <size_t i>
-	std::enable_if_t<i < 6u, Module const&> get() const noexcept {
+	std::enable_if_t<i < 6U, Module const&> get() const noexcept {
 		// i is a template parameter, so this switch is actually
 		// constant and (usually) evaluated at compile time. So, there
 		// is no overhead from this function.
