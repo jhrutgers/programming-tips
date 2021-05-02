@@ -120,8 +120,7 @@ add_executable(20210503_bind 20210503_bind.cpp)
 do_clang_tidy(20210503_bind
 	-clang-analyzer-deadcode.DeadStores,
 	-clang-diagnostic-mismatched-tags,
-	-cppcoreguidelines-pro-bounds-constant-array-index,
-	-clang-diagnostic-missing-braces
+	-cppcoreguidelines-pro-bounds-constant-array-index
 )
 target_compile_features(20210503_bind PRIVATE cxx_std_17)
 

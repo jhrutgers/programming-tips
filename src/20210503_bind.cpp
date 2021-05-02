@@ -100,10 +100,9 @@ int main()
 	std::cout << "tg1 from " << tg1 << " to " << tiangong_$[0] << std::endl;
 
 
-
 	// Structured binding can also be applied to tuples.
-	Tiangong tiangong{{2021, "Long March 5B"}, {2022}, {2022}};
-	//        Hmm, unlikely? Copy-paste error?  ^^^^ vs ^^^^
+	Tiangong tiangong{{{2021, "Long March 5B"}}, {{2022}}, {{2022}}};
+	//        Hmm, unlikely? Copy-paste error?     ^^^^  vs  ^^^^
 	// Here, tiangong is bound to three new variables, in this case
 	// references to the elements of the tuple. The name may be a bit
 	// deceptive. The 'structured binding' is actually a decomposition, as
