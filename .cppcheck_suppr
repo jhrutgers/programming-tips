@@ -17,3 +17,4 @@ unreadVariable:src/20210419_enums.cpp
 unmatchedSuppression:src/20210419_enums.cpp
 unusedStructMember:src/20210426_sfinae.cpp
 unmatchedSuppression:src/20210426_sfinae.cpp
+unassignedVariable:src/20210503_bind.cpp

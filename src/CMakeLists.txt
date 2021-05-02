@@ -117,8 +117,12 @@ do_clang_tidy(20210426_sfinae
 target_compile_features(20210426_sfinae PRIVATE cxx_std_17)
 
 add_executable(20210503_bind 20210503_bind.cpp)
-#do_clang_tidy(20210503_bind
-#)
+do_clang_tidy(20210503_bind
+	-clang-analyzer-deadcode.DeadStores,
+	-clang-diagnostic-mismatched-tags,
+	-cppcoreguidelines-pro-bounds-constant-array-index,
+	-clang-diagnostic-missing-braces
+)
 target_compile_features(20210503_bind PRIVATE cxx_std_17)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
