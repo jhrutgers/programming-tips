@@ -32,6 +32,25 @@ if(${CMAKE_VERSION} VERSION_GREATER "3.6.0")
 	find_program(CLANG_TIDY_EXE NAMES "clang-tidy" DOC "Path to clang-tidy executable")
 endif()
 
+set(WITH_SANITIZERS_DEFAULT OFF)
+
+if(CMAKE_BUILD_TYPE STREQUAL Debug)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		set(WITH_SANITIZERS_DEFAULT ON)
+	elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+		set(WITH_SANITIZERS_DEFAULT ON)
+	endif()
+endif()
+
+option(WITH_SANITIZERS "Build with address, leak and undefined sanitizers" ${WITH_SANITIZERS_DEFAULT})
+
+if(WITH_SANITIZERS)
+	add_compile_options( -fsanitize=address -fsanitize=leak -fsanitize=undefined -fno-omit-frame-pointer -fvisibility=hidden)
+	set(SANITIZER_FLAGS "-fsanitize=address -fsanitize=leak -fsanitize=undefined -static-libasan -static-liblsan -static-libubsan")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${SANITIZER_FLAGS}")
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${SANITIZER_FLAGS}")
+endif()
+
 function(do_clang_tidy target)
 	if(CLANG_TIDY_EXE)
 		string(CONCAT CLANG_TIDY_CHECKS "-checks="

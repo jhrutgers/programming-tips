@@ -52,6 +52,9 @@ do_clang_tidy(20210308_auto
 
 add_executable(20210315_literals 20210315_literals.cpp)
 do_clang_tidy(20210315_literals)
+if(WITH_SANITIZERS)
+	target_compile_options(20210315_literals PRIVATE -fno-sanitize=undefined)
+endif()
 
 list(FIND CMAKE_CXX_COMPILE_FEATURES "cxx_std_20" index)
 if(${index} GREATER -1 AND NOT CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
