@@ -133,6 +133,12 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 	target_compile_options(20210503_bind PUBLIC -Wno-unused-variable)
 endif()
 
+add_executable(20210510_constexpr 20210510_constexpr.cpp)
+if(TTM_INPUT)
+	target_compile_definitions(20210510_constexpr PUBLIC "-DTTM_INPUT=${TTM_INPUT}")
+endif()
+target_compile_features(20210510_constexpr PRIVATE cxx_std_17)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
