@@ -45,7 +45,7 @@ endif()
 option(WITH_SANITIZERS "Build with address, leak and undefined sanitizers" ${WITH_SANITIZERS_DEFAULT})
 
 if(WITH_SANITIZERS)
-	add_compile_options( -fsanitize=address -fsanitize=leak -fsanitize=undefined -fno-omit-frame-pointer -fvisibility=hidden)
+	add_compile_options( -fsanitize=address -fsanitize=leak -fsanitize=undefined -fno-omit-frame-pointer)
 	set(SANITIZER_FLAGS "-fsanitize=address -fsanitize=leak -fsanitize=undefined -static-libasan -static-liblsan -static-libubsan")
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${SANITIZER_FLAGS}")
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${SANITIZER_FLAGS}")
