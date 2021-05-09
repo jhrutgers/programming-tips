@@ -109,6 +109,7 @@ if(CPPCHECK_CMD)
 			--suppressions-list=${CMAKE_CURRENT_SOURCE_DIR}/.cppcheck_suppr
 #			--xml
 			src
+			-isrc/20210510_constexpr.cpp
 #			--check-config
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 		VERBATIM

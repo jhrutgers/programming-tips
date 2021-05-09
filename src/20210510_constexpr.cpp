@@ -479,7 +479,8 @@ public:
 		TapeLength = 128,
 	};
 
-	// This function is marked as constexpr. So, it can be executed by the compiler.
+	// This function is marked as constexpr. So, it can be executed by the
+	// compiler.
 	constexpr static size_t strlen(char const* s)
 	{
 		// In C++11, functions were only allowed to have a return
@@ -629,7 +630,7 @@ constexpr static CTM ctm_measure{
 	"4m*R5"
 	"4?*R4"
 	"51_L6"
-	"5 *NH"
+	"5 *NH" // Still not a problem.
 	"5?_R5"
 	"6n*L7"
 	"6?*L6"
