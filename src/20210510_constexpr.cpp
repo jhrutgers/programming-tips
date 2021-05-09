@@ -607,7 +607,7 @@ static void show(std::array<char,CTM::TapeLength> const& tape)
 	s.erase(0, s.find_first_not_of(" "));
 	s.erase(s.find_last_not_of(" ") + 1);
 
-	std::cout << s << std::endl;
+	std::cout << s.c_str() << std::endl;
 }
 
 // Need a reference to a variable as template argument (can't use std::array as value).
