@@ -143,6 +143,7 @@ endif()
 target_compile_features(20210510_constexpr PRIVATE cxx_std_17)
 
 add_executable(20210517_any 20210517_any.cpp)
+target_compile_definitions(20210517_any PRIVATE -DRise_like_a_Phoenix=2014.0)
 do_clang_tidy(20210517_any)
 target_compile_features(20210517_any PRIVATE cxx_std_17)
 

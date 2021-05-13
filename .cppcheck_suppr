@@ -17,3 +17,5 @@ unreadVariable:src/20210419_enums.cpp
 unmatchedSuppression:src/20210419_enums.cpp
 unusedStructMember:src/20210426_sfinae.cpp
 unmatchedSuppression:src/20210426_sfinae.cpp
+syntaxError:src/20210517_any.cpp
+unmatchedSuppression:src/20210517_any.cpp
