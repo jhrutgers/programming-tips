@@ -134,10 +134,17 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
 endif()
 
 add_executable(20210510_constexpr 20210510_constexpr.cpp)
+do_clang_tidy(20210510_constexpr
+	-cppcoreguidelines-pro-bounds-constant-array-index
+)
 if(TTM_INPUT)
 	target_compile_definitions(20210510_constexpr PUBLIC "-DTTM_INPUT=${TTM_INPUT}")
 endif()
 target_compile_features(20210510_constexpr PRIVATE cxx_std_17)
+
+add_executable(20210517_any 20210517_any.cpp)
+do_clang_tidy(20210517_any)
+target_compile_features(20210517_any PRIVATE cxx_std_17)
 
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
