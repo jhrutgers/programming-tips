@@ -332,12 +332,12 @@ struct Machine<Program, TapeLeft, TapeRight, State::Halt> {
 // the program. The show() functions have a parameter (by value). However,
 // these structs are all empty, and are not used by the function. They are only
 // used for overload and template parameter deduction.
-static void show(Tape<>) {
+static void show(Tape<> /*unused*/) {
 	// Tape is empty. Nothing to show.
 }
 
 template <Symbol symbol, Symbol... symbols>
-static void show(Tape<symbol, symbols...>) {
+static void show(Tape<symbol, symbols...> /*unused*/) {
 	// Note that the template parameter is printed here, not the Tape
 	// instance that was passed as function parameter.
 	std::cout << static_cast<char>(symbol);
@@ -345,7 +345,7 @@ static void show(Tape<symbol, symbols...>) {
 }
 
 template <typename Program, typename TapeLeft, typename TapeRight, State state>
-static void show(Machine<Program, TapeLeft, TapeRight, state>) {
+static void show(Machine<Program, TapeLeft, TapeRight, state> /*unused*/) {
 	show(TapeLeft());
 	std::cout << " >"; // Head indicator.
 	show(TapeRight());
