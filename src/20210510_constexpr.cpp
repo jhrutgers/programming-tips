@@ -527,7 +527,7 @@ public:
 		// The CTM program is a list of 5-tuples, which are just five
 		// characters in a row.  Make sure the length of the program is
 		// a multiple of five.
-		if(strlen(program) % 5u != 0)
+		if(strlen(program) % 5U != 0)
 			throw std::runtime_error("Invalid program");
 	}
 
@@ -556,7 +556,7 @@ public:
 		while(true) {
 			// Find instruction to run.
 			char const* instr = m_program;
-			for(; *instr; instr += 5u) {
+			for(; *instr; instr += 5U) {
 				// Check state of instruction.
 				if(instr[0] != state)
 					continue;
