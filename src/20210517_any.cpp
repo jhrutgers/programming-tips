@@ -31,7 +31,7 @@ static void show(std::any const& song)
 	} else if(auto const* sc = std::any_cast<char const*>(&song)) {
 		std::cout << *sc << " (char const*)" << std::endl;
 	} else if(auto const* ss = std::any_cast<std::string>(&song)) {
-		std::cout << *ss << " (std::string)" << std::endl;
+		std::cout << ss->c_str() << " (std::string)" << std::endl;
 	} else {
 		// You can also get the type() of the std::any content, which
 		// returns an std::type_info. This is the same thing as
@@ -61,7 +61,7 @@ int main()
 
 	// ...and reassign again.
 	ahoy = std::string("Shine a light");
-	std::cout << std::any_cast<std::string>(ahoy) << std::endl;
+	std::cout << std::any_cast<std::string>(ahoy).c_str() << std::endl;
 
 
 	// So far, so good. There are, however, some ugly details.  To use
