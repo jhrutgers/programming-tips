@@ -45,10 +45,13 @@ add_executable(20210301_lambda 20210301_lambda.cpp)
 do_clang_tidy(20210301_lambda)
 
 add_executable(20210308_auto 20210308_auto.cpp)
-do_clang_tidy(20210308_auto
-	-hicpp-move-const-arg,
-	-modernize-loop-convert,
-)
+# There seems to be some issue with clang-tidy with gcc-11 headers for C++20.
+if(NOT(UNIX AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND EXISTS /usr/include/c++/11/ranges))
+	do_clang_tidy(20210308_auto
+		-hicpp-move-const-arg,
+		-modernize-loop-convert,
+	)
+endif()
 
 add_executable(20210315_literals 20210315_literals.cpp)
 do_clang_tidy(20210315_literals)
