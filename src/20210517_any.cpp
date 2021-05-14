@@ -26,16 +26,17 @@ static void show(std::any const& song)
 	// cast, without throwing an exception.  This is a better way to check
 	// if the contained type is what you expect.
 	if(auto const* si = std::any_cast<int>(&song)) {
+		// si is of type int const*.
 		std::cout << *si << " (int)" << std::endl;
 	} else if(auto const* sc = std::any_cast<char const*>(&song)) {
 		std::cout << *sc << " (char const*)" << std::endl;
 	} else if(auto const* ss = std::any_cast<std::string>(&song)) {
 		std::cout << *ss << " (std::string)" << std::endl;
 	} else {
-		// You can also get the type() of the std::any, which returns
-		// an std::type_info. This is the same thing as returned by
-		// typeof(). Then, you can compare types based on this object,
-		// or request the (mangled) name.
+		// You can also get the type() of the std::any content, which
+		// returns an std::type_info. This is the same thing as
+		// returned by typeof(). Then, you can compare types based on
+		// this object, or request the (mangled) name.
 		std::cout << "(unknown type " << song.type().name() << ")" << std::endl;
 	}
 }
@@ -55,7 +56,7 @@ int main()
 	std::cout << std::any_cast<char const*>(ahoy) << std::endl;
 
 	// You can also destruct the contained object explicitly by calling
-	// reset().  ahoy.has_value() will return false afterwards.
+	// reset() -- ahoy.has_value() will return false afterwards --...
 	ahoy.reset();
 
 	// ...and reassign again.
@@ -115,15 +116,19 @@ int main()
 		show(song);
 
 	// So, I'm not completely convinced that this is really nice.  Usually,
-	// I just have a look for some amusement. A lot of it is what you
+	// I just have a look to get an impression. A lot of it is what you
 	// recognize and expect, though the ugly parts make it dubious to some
 	// extend.
 	//
 	// Anyway, about std::any, usually when you need type_info,
 	// dynamic_cast, or other ways of run-time type inspection, it is often
 	// an indication of a poor design. It is better to tell the compiler
-	// what type you need, than ask in run-time what type you got. So, use
-	// it with care.
+	// what type you need, than ask in run-time what type you got.
+	// Moreover, type erasure is not free.  It may use the heap to allocate
+	// the object, and virtual calls are involved in the implementation.
+	// So, use it with care.
+
+	return 12;
 }
 
 /*

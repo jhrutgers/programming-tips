@@ -189,5 +189,7 @@ if(TIPS_TESTS)
 	tip_test(20210419_enums 2)
 	tip_test(20210426_sfinae 0)
 	tip_test(20210503_bind 0)
+	tip_test(20210510_constexpr 0 'IBM_d1d_it!1')
+	tip_test(20210517_any 12)
 endif()
 
