@@ -115,6 +115,7 @@ if(CPPCHECK_CMD)
 #			--xml
 			src
 			-isrc/20210510_constexpr.cpp
+			-isrc/20210524_optional.cpp
 #			--check-config
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 		VERBATIM

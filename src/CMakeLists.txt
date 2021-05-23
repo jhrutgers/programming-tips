@@ -150,6 +150,10 @@ target_compile_definitions(20210517_any PRIVATE -DRise_like_a_Phoenix=2014.0)
 do_clang_tidy(20210517_any)
 target_compile_features(20210517_any PRIVATE cxx_std_17)
 
+add_executable(20210524_optional 20210524_optional.cpp)
+do_clang_tidy(20210524_optional)
+target_compile_features(20210524_optional PRIVATE cxx_std_17)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -194,5 +198,6 @@ if(TIPS_TESTS)
 	tip_test(20210503_bind 0)
 	tip_test(20210510_constexpr 0 'IBM_d1d_it!1')
 	tip_test(20210517_any 12)
+	tip_test(20210524_optional 0)
 endif()
 
