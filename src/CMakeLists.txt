@@ -151,7 +151,10 @@ do_clang_tidy(20210517_any)
 target_compile_features(20210517_any PRIVATE cxx_std_17)
 
 add_executable(20210524_optional 20210524_optional.cpp)
-do_clang_tidy(20210524_optional)
+do_clang_tidy(20210524_optional
+	-modernize-avoid-bind,
+	-bugprone-exception-escape
+)
 target_compile_features(20210524_optional PRIVATE cxx_std_17)
 
 if(TIPS_TESTS)

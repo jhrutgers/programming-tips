@@ -188,10 +188,10 @@ int main()
 	if(auto x = troll3(); std::get<bool>(x))
 		std::cout << "tuple:       " << std::get<std::string>(x).c_str() << std::endl;
 
-	if(auto x = troll4(); auto p = std::get_if<std::string>(&x))
+	if(auto x = troll4(); auto* p = std::get_if<std::string>(&x))
 		std::cout << "variant:     " << p->c_str() << std::endl;
 
-	if(auto x = troll5(); auto p = std::any_cast<std::string>(&x))
+	if(auto x = troll5(); auto* p = std::any_cast<std::string>(&x))
 		std::cout << "any:         " << p->c_str() << std::endl;
 
 	try {
