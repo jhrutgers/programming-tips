@@ -119,7 +119,7 @@ int main()
 	// initializer_list, you could build such a functionality using
 	// templates.  For example:
 	earth_surface_fraction(
-		41.543f, // The Netherlands
+		41.543F, // The Netherlands
 		9.834e6, // US
 		30.37e6L // Africa
 	);
