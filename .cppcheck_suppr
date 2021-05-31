@@ -19,3 +19,5 @@ unusedStructMember:src/20210426_sfinae.cpp
 unmatchedSuppression:src/20210426_sfinae.cpp
 syntaxError:src/20210517_any.cpp
 unmatchedSuppression:src/20210517_any.cpp
+unreadVariable:src/20210531_init_list.cpp
+unmatchedSuppression:src/20210531_init_list.cpp
