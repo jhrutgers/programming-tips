@@ -12,6 +12,7 @@
 // example.
 #include <initializer_list>
 
+#include <array>
 #include <iostream>
 #include <limits>
 #include <tuple>
