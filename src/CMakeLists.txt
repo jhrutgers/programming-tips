@@ -173,6 +173,10 @@ if(HAVE_CXX20 AND (NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILE
 		-clang-diagnostic-unknown-attributes
 	)
 	target_compile_features(20210607_attributes PRIVATE cxx_std_20)
+
+	if(MSVC)
+		target_compile_options(20210607_attributes PUBLIC "/wd5030" "/wd4505")
+	endif()
 endif()
 
 if(TIPS_TESTS)
