@@ -7,7 +7,8 @@
  * Linux kernel's likely() and unlikely().
  *
  * C++11 generalizes adding this information as attributes. In this example, we
- * will see how you can use it. Execution is not really necessary.
+ * will see how you can use it. Execution of this example is not really
+ * necessary.
  */
 
 // Attributes are part of the language. These includes are just for this
@@ -21,29 +22,31 @@
 //                  |
 //                  v
 //
-//                  ﹒
+//            [[    ﹒    ]]
 //
 //
-// It does not have wings, it makes sudden jumps when you scroll this page up
-// and own -- check out the G-forces --, it's gone if you look away, and it's
-// friends seem to be embedded everywhere. It must be an Unindentified
-// ASCII-like Phenomena.
+// It does not have wings, it makes sudden jumps when you scroll this page down
+// (to main()) and back up again -- check out the G-forces of these few photons
+// --, it's gone if you look away, and it's friends seem to be embedded
+// everywhere... It is an Unusual ASCII-like Phenomena.
 
 static void explain(bool ufo, int count, [[maybe_unused]] char const* bla_bla_what_you_think_it_is)
 {
-	// The likely attribute (since C++20) indicates that this branch is
-	// more likely to be taken.  The compiler may order the produced
-	// instructions, such that this path will execute a bit faster, taking
-	// cache properties into account, for example. It is like Linux's
-	// likely() macro. There is also an [[unlikely]] attribute, but you can
-	// guess what that means.
+	// The likely attribute (since C++20) indicates that this branch is more
+	// likely to be taken.  The compiler may order the produced instructions,
+	// such that this path will execute a bit faster, taking cache properties
+	// into account, for example. It is like Linux's likely() macro. There is
+	// also an [[unlikely]] attribute, but you can guess what that means.
 
 	if(!ufo) [[likely]] {
 		std::cout << "I knew it!" << std::endl;
 		return;
-	} else {
-		std::cout << "The first duty is to the truth." << std::endl;
 	}
+	// Do not put the [[likely]] in front of the if; it means that it is likely
+	// that the if itself is evaluated, regardless of which branch is taken...
+	// Put it before the (compound) statement that is likely to be executed.
+
+	std::cout << "The first duty is to the truth." << std::endl;
 
 	switch(count) {
 	case 0:
@@ -55,7 +58,7 @@ static void explain(bool ufo, int count, [[maybe_unused]] char const* bla_bla_wh
 	// I think, they usually come together...
 	[[likely]] case 4:
 		std::cout << "There are four lights!" << std::endl;
-		[[fallthrough]] // (C++17) instead of a comment mentioning 'fall-through'
+		[[fallthrough]]; // (C++17) instead of a comment mentioning 'fall-through'
 	case 5:
 	default:
 		std::cout << "Houston, we have a problem." << std::endl;
@@ -72,7 +75,7 @@ static void explain(bool ufo, int count, [[maybe_unused]] char const* bla_bla_wh
 // Attributes may have arguments, and there can be multiple attributes
 // specified within one [[ ... ]]. deprecated is from C++14, noreturn from
 // C++11.
-[[deprecated("It's a problem anyway."), maybe_unused, noreturn]]
+[[deprecated("It's a problem anyway."), maybe_unused, noreturn, gnu::section("51")]]
 static void halt()
 {
 	while(true);
@@ -108,12 +111,19 @@ int main()
 	// compiler.
 
 	explain(ufo, 4, "He has pointy ears too!");
-	delete take_unclear_picture();
+	delete[] take_unclear_picture();
+
+	// Phew, at least that block-like expression thing can be explained
+	// easily...
 }
 
 /*
  * Further reading:
  *
  * https://en.cppreference.com/w/cpp/language/attributes
+ *
+ * For example, all of these attributes can be applied for gcc using the
+ * attribute syntax [[gnu::...]]:
+ * https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes
  */
 

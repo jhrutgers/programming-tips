@@ -22,3 +22,5 @@ unmatchedSuppression:src/20210517_any.cpp
 unreadVariable:src/20210531_init_list.cpp
 useStlAlgorithm:src/20210531_init_list.cpp
 unmatchedSuppression:src/20210531_init_list.cpp
+unreadVariable:src/20210607_attributes.cpp
+unmatchedSuppression:src/20210607_attributes.cpp

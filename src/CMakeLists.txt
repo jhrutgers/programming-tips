@@ -165,9 +165,13 @@ add_executable(20210531_init_list 20210531_init_list.cpp)
 do_clang_tidy(20210531_init_list)
 target_compile_features(20210531_init_list PRIVATE cxx_std_17)
 
-if(HAVE_CXX20)
-	add_executable(20210607_attributes 20210607-attributes.cpp)
-	do_clang_tidy(20210607_attributes)
+# There is a bug in gcc 9's support of [[likely]].
+# https://gcc.gnu.org/pipermail/gcc-patches/2019-September/530189.html
+if(HAVE_CXX20 AND (NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10))
+	add_executable(20210607_attributes 20210607_attributes.cpp)
+	do_clang_tidy(20210607_attributes
+		-clang-diagnostic-unknown-attributes
+	)
 	target_compile_features(20210607_attributes PRIVATE cxx_std_20)
 endif()
 
@@ -217,7 +221,7 @@ if(TIPS_TESTS)
 	tip_test(20210517_any 12)
 	tip_test(20210524_optional 0)
 	tip_test(20210531_init_list 0)
-	if(HAVE_CXX20)
+	if(TARGET 20210607_attributes)
 		tip_test(20210607_attributes 0)
 	endif()
 endif()
