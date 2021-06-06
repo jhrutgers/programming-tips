@@ -177,6 +177,12 @@ if(HAVE_CXX20 AND (NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILE
 	if(MSVC)
 		target_compile_options(20210607_attributes PUBLIC "/wd5030" "/wd4505")
 	endif()
+	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		target_compile_options(20210607_attributes PRIVATE "-Dsection(area)=cold")
+	endif()
+	if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+		target_compile_options(20210607_attributes PUBLIC "-Wno-unknown-attributes")
+	endif()
 endif()
 
 if(TIPS_TESTS)
