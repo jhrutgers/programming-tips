@@ -185,6 +185,12 @@ if(HAVE_CXX20 AND (NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILE
 	endif()
 endif()
 
+add_executable(20210614_fold 20210614_fold.cpp)
+do_clang_tidy(20210614_fold
+	-readability-named-parameter,
+)
+target_compile_features(20210614_fold PRIVATE cxx_std_17)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -234,5 +240,6 @@ if(TIPS_TESTS)
 	if(TARGET 20210607_attributes)
 		tip_test(20210607_attributes 0)
 	endif()
+	tip_test(20210614_fold 0)
 endif()
 
