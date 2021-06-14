@@ -155,7 +155,7 @@ static auto who_earns_the_most(Arg&&... arg)
 
 int main()
 {
-	std::cout << "For reason X, this professional completes his job:" << std::boolalpha << std::endl;
+	std::cout << "Even with setback X, this professional still completes his job:" << std::boolalpha << std::endl;
 
 	// There are four ways of doing a fold.
 	std::cout << "Soldier: "            << (sum(DeadColleague{}, MissingLeg{}, BrokenMaterial{})     < std::numeric_limits<double>::infinity()) << std::endl;
