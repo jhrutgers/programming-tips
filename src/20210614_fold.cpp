@@ -9,6 +9,7 @@
  */
 
 // Fold expressions are part of the language. These are just for this example.
+#include <algorithm>
 #include <iostream>
 #include <limits>
 #include <tuple>
