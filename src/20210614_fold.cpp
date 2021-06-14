@@ -10,6 +10,7 @@
 
 // Fold expressions are part of the language. These are just for this example.
 #include <iostream>
+#include <limits>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -126,7 +127,7 @@ static auto tough_guy(Arg&&... arg)
 	// Note the initial value in the fold expression. This is a left fold,
 	// which would expand to:
 	// ((((init ^ arg0) ^ arg1) ^ arg2) ^ arg3)...
-	return (1u ^ ... ^ arg);
+	return (1U ^ ... ^ arg);
 
 	// Quite ugly to misuse an operator for it, but I can imagine that
 	// there are valid use cases.
