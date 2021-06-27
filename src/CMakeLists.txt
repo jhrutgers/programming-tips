@@ -191,6 +191,10 @@ do_clang_tidy(20210614_fold
 )
 target_compile_features(20210614_fold PRIVATE cxx_std_17)
 
+add_executable(20210628_string_view 20210628_string_view.cpp)
+do_clang_tidy(20210628_string_view)
+target_compile_features(20210628_string_view PRIVATE cxx_std_17)
+
 if(TIPS_TESTS)
 	find_program(VALGRIND_CMD NAMES valgrind)
 
@@ -241,5 +245,6 @@ if(TIPS_TESTS)
 		tip_test(20210607_attributes 0)
 	endif()
 	tip_test(20210614_fold 0)
+	tip_test(20210628_string_view 0)
 endif()
 
