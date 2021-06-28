@@ -2,6 +2,7 @@ missingIncludeSystem:*
 cstyleCast:*
 constParameter:*
 unmatchedSuppression:*
+ctuOneDefinitionRuleViolation:*
 noExplicitConstructor:src/20210125_smart_pointers.cpp
 throwInNoexceptFunction:src/20210201_raii.cpp
 noExplicitConstructor:src/20210215_move.cpp
