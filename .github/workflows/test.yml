@@ -47,13 +47,13 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        compiler: [g++-10, clang++, llvm11]
+        compiler: [g++-11, clang++, llvm11]
         buildtype: [Debug, Release]
         include:
           - os: macos-latest
-            compiler: g++-10
-            cxx: g++-10
-            package: gcc@10
+            compiler: g++-11
+            cxx: g++-11
+            package: gcc@11
           - os: macos-latest
             compiler: clang++
             cxx: clang++
