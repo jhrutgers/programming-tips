@@ -11,9 +11,12 @@
 #include <compare>
 
 // These are just for this example.
+#include <array>
+#include <cstdint>
 #include <iostream>
 #include <limits>
 #include <string_view>
+
 using std::literals::string_view_literals::operator""sv;
 
 class Gas {
@@ -50,14 +53,6 @@ public:
 	bool operator>=(Country const& o) const { return !(*this < o); }
 };
 
-class NewWay {
-public:
-	std::strong_ordering operator<=>(NewWay const& o) const
-	{
-		return std::strong_ordering::equal;
-	}
-};
-
 class Storage {
 public:
 	std::string_view name;
@@ -80,9 +75,31 @@ public:
 	}
 };
 
-class DefaultWay {
+class GasImport {
 public:
-	auto operator<=>(DefaultWay const& o) const = default;
+	std::string_view country;
+	uint8_t imported_pct{};
+
+	std::strong_ordering operator<=>(GasImport const& o) const
+	{
+		auto a = imported_pct;
+		auto b = o.imported_pct;
+
+		return
+			a == b ? std::strong_ordering::equivalent :
+			a < b  ? std::strong_ordering::less :
+			         std::strong_ordering::greater;
+
+		// return a <=> b; would be easier...
+	}
+};
+
+class Price {
+public:
+	double EUR_per_kWh;
+	std::string_view country;
+
+	auto operator<=>(Price const& o) const = default;
 };
 
 int main()
@@ -122,6 +139,29 @@ int main()
 	std::cout << (NL0201 <=> UK1102 == 0) << std::endl;
 	std::cout << (NL0201 <=> UK1102 < 0) << std::endl;
 	std::cout << (NL0201 <=> UK1102 > 0) << std::endl;
+
+	std::array eu_import{
+		GasImport{"Norway", 28},
+		GasImport{"Russia", 18},
+		GasImport{"Belarus", 9},
+		GasImport{"Ukraine", 17}};
+
+	std::sort(eu_import.begin(), eu_import.end());
+	for(auto const& i : eu_import)
+		std::cout << i.country << ": " << +i.imported_pct << " % of total EU import" << std::endl;
+
+	std::array prices{
+		Price{0.0498, "Belgium"},
+		Price{0.062, "Germany"},
+		Price{0.028, "Latvia"},
+		Price{0.1073, "Sweden"},
+		Price{0.101, "The Netherlands"},
+	};
+
+	std::sort(prices.begin(), prices.end(), std::greater<>());
+
+	for(auto const& p : prices)
+		std::cout << p.country << ": EUR " << p.EUR_per_kWh << " per kWh" << std::endl;
 }
 
 /*
