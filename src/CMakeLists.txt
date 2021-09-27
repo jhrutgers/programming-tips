@@ -197,8 +197,12 @@ add_executable(20210628_string_view 20210628_string_view.cpp)
 do_clang_tidy(20210628_string_view)
 target_compile_features(20210628_string_view PRIVATE cxx_std_17)
 
-# AppleClang does not support C++20 enough for this example.
-if(HAVE_CXX20 AND NOT CMAKE_CXX_COMPILER_ID MATCHES "AppleClang" AND NOT (MSVC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19.21"))
+# C++20 support is not really great yet, even though compilers accept the C++20
+# language flag.  Be explicit for this example.
+if(HAVE_CXX20 AND (
+	(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10) OR
+	(MSVC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "19.21")))
+
 	add_executable(20210927_compare 20210927_compare.cpp)
 	# No proper C++20 support for tidy yet?
 	#do_clang_tidy(20210927_compare)
