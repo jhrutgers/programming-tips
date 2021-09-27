@@ -20,7 +20,7 @@
 #include <limits>
 #include <string_view>
 
-using std::literals::string_view_literals::operator""sv;
+using namespace std::literals;
 
 // By default, there are no comparison operators defined.  So, you cannot
 // compare instances of this class.

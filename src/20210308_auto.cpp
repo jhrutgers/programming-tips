@@ -222,7 +222,7 @@ auto convert(Air&& co2) -> decltype(auto)
 }
 #endif
 
-#if __cplusplus >= 202002L
+#if __cplusplus >= 202002L && __cpp_lib_ranges >= 201911L
 #include <ranges>
 
 // In C++20, the auto parameter type (as already seen with the lambda) can also
