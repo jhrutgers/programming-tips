@@ -7,6 +7,7 @@ noExplicitConstructor:src/20210125_smart_pointers.cpp
 throwInNoexceptFunction:src/20210201_raii.cpp
 noExplicitConstructor:src/20210215_move.cpp
 unusedStructMember:src/20210322_tuple.cpp
+constVariable:src/20210322_tuple.cpp
 noExplicitConstructor:src/20210329_variant.cpp
 noExplicitConstructor:src/20210405_pack.cpp
 unusedStructMember:src/20210405_pack.cpp
@@ -18,6 +19,8 @@ unreadVariable:src/20210419_enums.cpp
 unmatchedSuppression:src/20210419_enums.cpp
 unusedStructMember:src/20210426_sfinae.cpp
 unmatchedSuppression:src/20210426_sfinae.cpp
+constVariable:src/20210503_bind.cpp
+unassignedVariable:src/20210503_bind.cpp
 syntaxError:src/20210517_any.cpp
 unmatchedSuppression:src/20210517_any.cpp
 unreadVariable:src/20210531_init_list.cpp
@@ -26,3 +29,4 @@ unmatchedSuppression:src/20210531_init_list.cpp
 unreadVariable:src/20210607_attributes.cpp
 unmatchedSuppression:src/20210607_attributes.cpp
 compareBoolExpressionWithInt:src/20210927_compare.cpp
+unmatchedSuppression:src/20210927_compare.cpp

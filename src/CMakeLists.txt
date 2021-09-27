@@ -198,7 +198,7 @@ do_clang_tidy(20210628_string_view)
 target_compile_features(20210628_string_view PRIVATE cxx_std_17)
 
 # AppleClang does not support C++20 enough for this example.
-if(HAVE_CXX20 AND NOT CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
+if(HAVE_CXX20 AND NOT CMAKE_CXX_COMPILER_ID MATCHES "AppleClang" AND NOT (MSVC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19.21"))
 	add_executable(20210927_compare 20210927_compare.cpp)
 	# No proper C++20 support for tidy yet?
 	#do_clang_tidy(20210927_compare)
